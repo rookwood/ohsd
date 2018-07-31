@@ -23,7 +23,7 @@ abstract class TestCase extends BaseTestCase
 
         EloquentCollection::macro('assertEquals', function($items) {
             $this->zip($items)->each(function($pair) {
-                Assert::assertTrue($pair[0]->is($pair[1]));
+                Assert::assertTrue($pair[0]->is($pair[1]), 'The provided Eloquent models were not the same.');
             });
         });
     }

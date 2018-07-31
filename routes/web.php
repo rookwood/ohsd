@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('audiograms/{patient}/store', 'AudiogramsController@store')->name('audiograms.store');
+
+Route::get('patient/{patient}', 'PatientsController@show')->name('patients.show');

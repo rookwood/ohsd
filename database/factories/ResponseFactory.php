@@ -9,5 +9,6 @@ $factory->define(Response::class, function (Faker $faker) {
         'ear' => $faker->randomElement(['right', 'left']),
         'amplitude' => $faker->numberBetween(-2,24) * 5,
         'stimulus' => 'tone',
+        'test' => 'threshold',
     ];
 });

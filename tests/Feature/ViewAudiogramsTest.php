@@ -22,12 +22,24 @@ class ViewAudiogramsTest extends TestCase
             'user_id'    => $audiologist->id
         ]);
 
-        $response = $this->get(route('patients.show', $patient));
+        $response = $this->actingAs($audiologist)
+            ->get(route('patients.show', $patient));
 
         $response->assertSuccessful();
         $response->assertViewIs('patients.show');
 
         $this->assertCount(3, $response->data('audiograms'));
         $audiograms->assertEquals($response->data('audiograms'));
+    }
+
+    /** @test */
+    public function audiograms_entry_form_cannot_be_viewed_by_unauthenticated_users()
+    {
+    	$this->withExceptionHandling();
+
+        $response = $this->get(route('audiograms.create', 1));
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/login');
     }
 }

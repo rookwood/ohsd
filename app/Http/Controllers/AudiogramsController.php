@@ -13,4 +13,9 @@ class AudiogramsController extends Controller
 
         return redirect()->route('patients.show', $patient);
     }
+
+    public function create()
+    {
+
+    }
 }

@@ -50,6 +50,17 @@ class CreateAudiogramTest extends TestCase
     }
 
     /** @test */
+    public function audiograms_cannot_be_created_by_unauthenticated_users()
+    {
+    	$this->withExceptionHandling();
+
+        $response = $this->post(route('audiograms.store', 1), $this->validData());
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/login');
+    }
+
+    /** @test */
     public function noise_exposure_data_is_required()
     {
         $this->expectValidationErrorFromBadData('noise_exposure', array_except($this->validData(), 'noise_exposure'));

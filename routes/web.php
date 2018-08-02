@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('audiograms/{patient}/create', 'AudiogramsController@create')->name('audiograms.create');
 Route::post('audiograms/{patient}/store', 'AudiogramsController@store')->name('audiograms.store');
 
 Route::get('patient/{patient}', 'PatientsController@show')->name('patients.show');

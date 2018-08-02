@@ -18,7 +18,9 @@ class CreateResponsesTable extends Migration
             $table->unsignedInteger('audiogram_id');
             $table->integer('frequency');
             $table->string('ear');
+            $table->string('stimulus');
             $table->integer('amplitude');
+            $table->string('test');
             $table->boolean('masking')->default(false);
             $table->string('modality')->default('air');
             $table->boolean('no_response')->default(false);

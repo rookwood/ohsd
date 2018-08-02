@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Rules;
 
-use App\Rules\ValidModality;
 use Tests\TestCase;
+use App\Rules\ValidModality;
 
 class ValidModalityTest extends TestCase
 {

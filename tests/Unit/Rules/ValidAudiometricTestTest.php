@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Rules;
 
-use App\Rules\ValidAudiometricTest;
 use Tests\TestCase;
+use App\Rules\ValidAudiometricTest;
 
 class ValidAudiometricTestTest extends TestCase
 {

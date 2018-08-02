@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Rules;
 
-use App\Rules\ValidAudiometricFrequency;
 use Tests\TestCase;
+use App\Rules\ValidAudiometricFrequency;
 
 class ValidAudiometricFrequencyTest extends TestCase
 {

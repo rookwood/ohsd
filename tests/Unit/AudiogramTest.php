@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Audiogram;
 use App\Patient;
 use App\Response;
-use Illuminate\Support\Facades\Auth;
+use App\Audiogram;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AudiogramTest extends TestCase

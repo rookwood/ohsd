@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Rules\ValidStimulus;
 use Tests\TestCase;
+use App\Rules\ValidStimulus;
 
 class ValidStimulusTest extends TestCase
 {

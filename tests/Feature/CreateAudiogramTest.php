@@ -2,35 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Audiogram;
+use App\User;
 use App\Patient;
 use App\Response;
-use App\User;
+use App\Audiogram;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class NewAudiogramTest extends TestCase
+class CreateAudiogramTest extends TestCase
 {
     use RefreshDatabase;
-
-    /** @test */
-    public function viewing_a_patients_audiograms()
-    {
-        $audiologist = factory(User::class)->create();
-        $patient = factory(Patient::class)->create();
-        $audiograms = factory(Audiogram::class, 3)->create([
-            'patient_id' => $patient->id,
-            'user_id' => $audiologist->id
-        ]);
-
-        $response = $this->get(route('patients.show', $patient));
-
-        $response->assertSuccessful();
-        $response->assertViewIs('patients.show');
-
-        $this->assertCount(3, $response->data('audiograms'));
-        $audiograms->assertEquals($response->data('audiograms'));
-    }
 
     /** @test */
     public function test_results_can_be_logged()
@@ -38,8 +19,8 @@ class NewAudiogramTest extends TestCase
         $user = factory(User::class)->create();
         $patient = factory(Patient::class)->create();
 
-        $response = $this->actingAs($user)->post(route('audiograms.store', $patient), $this->validData());
-
+        $response = $this->actingAs($user)
+            ->post(route('audiograms.store', $patient), $this->validData());
 
         $response->assertStatus(302);
         $response->assertRedirect(route('patients.show', $patient));
@@ -66,30 +47,6 @@ class NewAudiogramTest extends TestCase
         $this->assertFalse($response->masking);
         $this->assertEquals('air', $response->modality);
         $this->assertFalse($response->no_response);
-    }
-
-    /**
-     * @param  string $error Field on which the validation error is expected
-     * @param  array $data Bad data to submit
-     * @return void
-     */
-    protected function expectValidationErrorFromBadData($error, $data)
-    {
-        $this->withExceptionHandling();
-
-        $user    = factory(User::class)->create();
-        $patient = factory(Patient::class)->create();
-
-        $response = $this->actingAs($user)->from(route('audiograms.create', $patient))->post(route('audiograms.store',
-                $patient), $data);
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('audiograms.create', $patient));
-
-        $response->assertValidationError($error);
-
-        $this->assertEmpty(Audiogram::all());
-        $this->assertEmpty(Response::all());
     }
 
     /** @test */
@@ -249,6 +206,31 @@ class NewAudiogramTest extends TestCase
         $testData['responses'][0]['test'] = 'tuning fork';
 
         $this->expectValidationErrorFromBadData('responses.0.test', $testData);
+    }
+
+    /**
+     * @param  string $error Field on which the validation error is expected
+     * @param  array  $data  Bad data to submit
+     * @return void
+     */
+    protected function expectValidationErrorFromBadData($error, $data)
+    {
+        $this->withExceptionHandling();
+
+        $user    = factory(User::class)->create();
+        $patient = factory(Patient::class)->create();
+
+        $response = $this->actingAs($user)
+            ->from(route('audiograms.create', $patient))
+            ->post(route('audiograms.store', $patient), $data);
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('audiograms.create', $patient));
+
+        $response->assertValidationError($error);
+
+        $this->assertEmpty(Audiogram::all());
+        $this->assertEmpty(Response::all());
     }
 
     protected function validData($overrides = [])

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Rules;
 
-use App\Rules\ValidMasking;
 use Tests\TestCase;
+use App\Rules\ValidMasking;
 
 class ValidMaskingTest extends TestCase
 {

@@ -2,16 +2,16 @@
 
 
 ####Storage of screening results
-- [ ] Serial audiograms
-  - [ ] Threshold data
-  - [ ] Pretest noise exposure
-  - [ ] Hearing protection used since last evaluation
-  - [ ] Otoscopy results (pass/fail)
-  - [ ] Evaluation comments
+- [x] Serial audiograms
+  - [x] Threshold data
+  - [x] Pretest noise exposure
+  - [x] Hearing protection used since last evaluation
+  - [x] Otoscopy results (pass/fail)
+  - [x] Evaluation comments
 
 - [ ] Patient information
   - [ ] Intake medical questionaire
-  - [ ] Basic demographics
+  - [x] Basic demographics
 
 - [ ] Evaluator information
   - [ ] Qualifications

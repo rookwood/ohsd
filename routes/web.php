@@ -23,8 +23,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('patients', 'PatientsController@index')->name('patients.index');
     Route::get('patient/{patient}', 'PatientsController@show')->name('patients.show');
+
+    Route::post('patients/new', 'PatientsController@store')->name('patients.store');
 });
 
+Route::get('patients/new', 'PatientsController@create')->name('patients.create');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();

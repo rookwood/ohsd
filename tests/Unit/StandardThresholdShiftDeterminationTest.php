@@ -15,7 +15,7 @@ class StandardThresholdShiftDeterminationTest extends TestCase
     public function detect_standard_threshold_shifts()
     {
         $baselineAudiogram = factory(Audiogram::class)->state('normal')->create();
-        $currentAudiogram = factory(Audiogram::class)->state('moderate-hearing-loss')->create();
+        $currentAudiogram = factory(Audiogram::class)->state('moderate-loss')->create();
 
     	$stsd = new StandardThresholdShiftDetermination;
 
@@ -23,10 +23,21 @@ class StandardThresholdShiftDeterminationTest extends TestCase
     }
 
     /** @test */
-    public function detect_no_significant_change_in_thresholds()
+    public function detect_no_standard_threshold_shift_in_identical_audiograms()
     {
         $baselineAudiogram = factory(Audiogram::class)->state('normal')->create();
         $currentAudiogram  = factory(Audiogram::class)->state('normal')->create();
+
+        $stsd = new StandardThresholdShiftDetermination;
+
+        $this->assertFalse($stsd->test($baselineAudiogram, $currentAudiogram));
+    }
+
+    /** @test */
+    public function detect_no_standard_threshold_shift_with_minor_changes()
+    {
+        $baselineAudiogram = factory(Audiogram::class)->state('borderline-normal')->create();
+        $currentAudiogram  = factory(Audiogram::class)->state('mild-loss')->create();
 
         $stsd = new StandardThresholdShiftDetermination;
 

@@ -38,6 +38,6 @@ class StandardThresholdShiftDetermination
             return $responsePair[1]->amplitude - $responsePair[0]->amplitude;
         });
 
-        return $differences->sum() / 3 > 10;
+        return ($differences->sum() / 3) > 10;
     }
 }

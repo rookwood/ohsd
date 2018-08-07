@@ -39,9 +39,43 @@ $factory->afterCreatingstate(Audiogram::class, 'normal', function(Audiogram $aud
     });
 });
 
-$factory->state(Audiogram::class, 'moderate-hearing-loss', []);
+$factory->state(Audiogram::class, 'borderline-normal', []);
 
-$factory->afterCreatingstate(Audiogram::class, 'moderate-hearing-loss', function(Audiogram $audiogram, Faker $faker) {
+$factory->afterCreatingstate(Audiogram::class, 'borderline-normal', function(Audiogram $audiogram, Faker $faker) {
+    return tap($audiogram, function ($audiogram) {
+        $audiogram->responses()->saveMany(array_map(function ($frequency) {
+            return new Response([
+                'frequency' => $frequency,
+                'amplitude' => 25,
+                'ear'       => 'right',
+                'stimulus'  => 'tone',
+                'test'      => 'threshold',
+                'modality'  => 'air',
+            ]);
+        }, [500, 1000, 2000, 3000, 4000]));
+    });
+});
+
+$factory->state(Audiogram::class, 'mild-loss', []);
+
+$factory->afterCreatingstate(Audiogram::class, 'mild-loss', function(Audiogram $audiogram, Faker $faker) {
+    return tap($audiogram, function ($audiogram) {
+        $audiogram->responses()->saveMany(array_map(function ($frequency) {
+            return new Response([
+                'frequency' => $frequency,
+                'amplitude' => 30,
+                'ear'       => 'right',
+                'stimulus'  => 'tone',
+                'test'      => 'threshold',
+                'modality'  => 'air',
+            ]);
+        }, [500, 1000, 2000, 3000, 4000]));
+    });
+});
+
+$factory->state(Audiogram::class, 'moderate-loss', []);
+
+$factory->afterCreatingstate(Audiogram::class, 'moderate-loss', function(Audiogram $audiogram, Faker $faker) {
     return tap($audiogram, function ($audiogram) {
         $audiogram->responses()->saveMany(array_map(function ($frequency) {
             return new Response([

@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Events\TestResultWasLogged;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\TestResult;
 
 class Audiogram extends Model
 {
@@ -33,6 +35,8 @@ class Audiogram extends Model
         $audiogram->responses()->saveMany(array_map(function ($response) {
             return new Response($response);
         }, $responses));
+
+        event(new TestResultWasLogged($audiogram));
 
         return $audiogram;
     }

@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Events\TestResultWasLogged;
 use App\User;
 use App\Patient;
 use App\Response;
 use App\Audiogram;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -16,6 +18,8 @@ class CreateAudiogramTest extends TestCase
     /** @test */
     public function test_results_can_be_logged()
     {
+        Event::fake();
+
         $user = factory(User::class)->create();
         $patient = factory(Patient::class)->create();
 
@@ -24,6 +28,10 @@ class CreateAudiogramTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('patients.show', $patient));
+
+        Event::assertDispatched(TestResultWasLogged::class, function($event) {
+            return $event->audiogram->id === Audiogram::first()->id;
+        });
 
         $this->assertCount(1, Audiogram::all());
         $this->assertCount(2, Response::all());

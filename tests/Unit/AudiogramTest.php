@@ -43,4 +43,22 @@ class AudiogramTest extends TestCase
     	$this->assertTrue($audiogramA->fresh()->isBaseline());
     	$this->assertFalse($audiogramB->fresh()->isBaseline());
     }
+
+    /** @test */
+    public function get_relative_baseline()
+    {
+        $audiogramA = factory(Audiogram::class)
+            ->state('normal')
+            ->create(['patient_id' => 1]);
+
+        $audiogramB = factory(Audiogram::class)
+            ->state('normal')
+            ->create(['patient_id' => 1]);
+
+        $audiogramC = factory(Audiogram::class)
+            ->state('normal')
+            ->create(['patient_id' => 1]);
+
+        $this->assertTrue($audiogramC->getBaseline()->is($audiogramA));
+    }
 }

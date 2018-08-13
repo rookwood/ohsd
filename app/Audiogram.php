@@ -47,6 +47,14 @@ class Audiogram extends Model
         return $this->baseline;
     }
 
+    public function getBaseline()
+    {
+        return static::where([
+            'baseline' => true,
+            'patient_id' => $this->patient_id
+        ])->orderByDesc('created_at')->first();
+    }
+
     public function passedOtoscopicEvaluation()
     {
         return $this->otoscopy;

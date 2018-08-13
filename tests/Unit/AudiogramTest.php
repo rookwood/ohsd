@@ -2,9 +2,11 @@
 
 namespace Tests\Unit;
 
+use App\Events\TestResultWasLogged;
 use App\Patient;
 use App\Response;
 use App\Audiogram;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -60,5 +62,33 @@ class AudiogramTest extends TestCase
             ->create(['patient_id' => 1]);
 
         $this->assertTrue($audiogramC->getBaseline()->is($audiogramA));
+    }
+
+    /** @test */
+    public function audiogram_showing_threshold_shift_still_gets_previous_record_as_baseline()
+    {
+        $original = factory(Audiogram::class)
+            ->state('normal')
+            ->create([
+                'patient_id' => 1,
+                'created_at' => Carbon::now()->subDays(2),
+            ]);
+
+        $firstLossDetected = factory(Audiogram::class)
+            ->state('moderate-loss')->create([
+                'patient_id' => 1,
+                'created_at' => Carbon::now()->subDays(1),
+            ]);
+
+        // Simulate saving through actual static constructor
+        event(new TestResultWasLogged($firstLossDetected));
+
+        $followUpTest = factory(Audiogram::class)
+            ->state('moderate-loss')->create([
+                'patient_id' => 1,
+                'created_at' => Carbon::now(),
+            ]);
+
+        $this->assertTrue($followUpTest->getBaseline()->is($firstLossDetected));
     }
 }

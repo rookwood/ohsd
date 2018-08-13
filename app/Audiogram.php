@@ -16,7 +16,8 @@ class Audiogram extends Model
         'noise_exposure',
         'hearing_protection',
         'comment',
-        'date'
+        'date',
+        'baseline'
     ];
 
     protected $casts = [
@@ -53,6 +54,11 @@ class Audiogram extends Model
             'baseline' => true,
             'patient_id' => $this->patient_id
         ])->orderByDesc('created_at')->first();
+    }
+
+    public function markAsNewBaseline()
+    {
+        return tap($this)->update(['baseline' => true]);
     }
 
     public function passedOtoscopicEvaluation()

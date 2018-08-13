@@ -65,6 +65,23 @@ class AudiogramTest extends TestCase
     }
 
     /** @test */
+    public function audiogram_with_new_threshold_shift_becomes_baseline()
+    {
+         $audiogramA = factory(Audiogram::class)
+            ->state('normal')
+            ->create(['patient_id' => 1]);
+
+        $audiogramB = factory(Audiogram::class)
+            ->state('moderate-loss')
+            ->create(['patient_id' => 1]);
+
+        // Simulate saving through actual static constructor
+        event(new TestResultWasLogged($audiogramB));
+
+        $this->assertTrue($audiogramB->fresh()->isBaseline());
+    }
+
+    /** @test */
     public function audiogram_showing_threshold_shift_still_gets_previous_record_as_baseline()
     {
         $original = factory(Audiogram::class)

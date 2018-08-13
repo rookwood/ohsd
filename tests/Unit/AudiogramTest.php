@@ -107,5 +107,6 @@ class AudiogramTest extends TestCase
             ]);
 
         $this->assertTrue($followUpTest->getBaseline()->is($firstLossDetected));
+        $this->assertTrue($firstLossDetected->getBaseline()->is($original));
     }
 }

@@ -50,10 +50,14 @@ class Audiogram extends Model
 
     public function getBaseline()
     {
-        return static::where([
-            'baseline' => true,
-            'patient_id' => $this->patient_id
-        ])->orderByDesc('created_at')->first();
+        $previous = static::where('baseline', true)
+            ->where('patient_id', $this->patient_id)
+            ->where('id', '!=', $this->id)
+            ->whereDate('created_at', '<', $this->created_at->startOfDay())
+            ->orderByDesc('created_at')
+            ->first();
+
+        return $previous ?? $this;
     }
 
     public function markAsNewBaseline()

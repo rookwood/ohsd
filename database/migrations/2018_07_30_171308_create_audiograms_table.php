@@ -16,6 +16,7 @@ class CreateAudiogramsTable extends Migration
         Schema::create('audiograms', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('patient_id');
+            $table->boolean('baseline')->default(false);
             $table->unsignedInteger('user_id');
             $table->boolean('otoscopy');
             $table->boolean('noise_exposure');

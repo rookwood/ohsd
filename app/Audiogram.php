@@ -22,7 +22,8 @@ class Audiogram extends Model
     protected $casts = [
         'otoscopy'           => 'boolean',
         'noise_exposure'     => 'boolean',
-        'hearing_protection' => 'boolean'
+        'hearing_protection' => 'boolean',
+        'baseline'           => 'boolean',
     ];
 
     public static function newScreeningForPatient(Patient $patient, $testData, $responses)
@@ -39,6 +40,11 @@ class Audiogram extends Model
         event(new TestResultWasLogged($audiogram));
 
         return $audiogram;
+    }
+
+    public function isBaseline()
+    {
+        return $this->baseline;
     }
 
     public function passedOtoscopicEvaluation()

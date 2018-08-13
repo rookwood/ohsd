@@ -33,4 +33,14 @@ class AudiogramTest extends TestCase
             $this->assertDatabaseHas('responses', $response->toArray());
         });
     }
+
+    /** @test */
+    public function initial_audiogram_is_baseline_by_default()
+    {
+    	$audiogramA = factory(Audiogram::class)->create(['patient_id' => 1]);
+    	$audiogramB = factory(Audiogram::class)->create(['patient_id' => 1]);
+
+    	$this->assertTrue($audiogramA->fresh()->isBaseline());
+    	$this->assertFalse($audiogramB->fresh()->isBaseline());
+    }
 }

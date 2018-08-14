@@ -25,7 +25,7 @@ class CheckForThresholdShift
     }
 
     /**
-     * Handle the event.
+     * Test for occurence of standard threshold shift.
      *
      * @param  TestResultWasLogged  $event
      * @return void

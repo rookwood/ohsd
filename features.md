@@ -21,7 +21,7 @@
 - [ ] Standard Threshold shift
   - [x] Without age adjustment
   - [ ] With age adjustment
-  - [ ] Calculate automatically when new test added
+  - [x] Calculate automatically when new test added
 
 
 ####Generate patient and employer letters

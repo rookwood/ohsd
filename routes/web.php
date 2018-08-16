@@ -28,6 +28,8 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('patients/new', 'PatientsController@create')->name('patients.create');
+Route::post('users/new', 'UsersController@store')->name('users.store');
+Route::get('users/register', 'UsersController@create')->name('users.create');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();

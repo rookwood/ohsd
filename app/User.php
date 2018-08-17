@@ -27,4 +27,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * APA style for life! We aren't some silly humanities discipline
+     *
+     * @param string $degree
+     */
+    public function setDegreeAttribute($degree)
+    {
+        $this->attributes['degree'] = str_replace('.', '', $degree);
+    }
 }

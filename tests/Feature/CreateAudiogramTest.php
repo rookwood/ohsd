@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Events\TestResultWasLogged;
-use App\User;
+use App\Users\User;
 use App\Patient;
 use App\Response;
 use App\Audiogram;

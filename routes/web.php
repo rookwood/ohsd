@@ -25,10 +25,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('patient/{patient}', 'PatientsController@show')->name('patients.show');
 
     Route::post('patients/new', 'PatientsController@store')->name('patients.store');
+
+    Route::post('users/new', 'UsersController@store')->name('users.store');
 });
 
 Route::get('patients/new', 'PatientsController@create')->name('patients.create');
-Route::post('users/new', 'UsersController@store')->name('users.store');
 Route::get('users/register', 'UsersController@create')->name('users.create');
 Route::get('/home', 'HomeController@index')->name('home');
 

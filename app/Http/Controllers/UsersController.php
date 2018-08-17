@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
-use App\User;
+use App\Users\User;
 
 class UsersController extends Controller
 {

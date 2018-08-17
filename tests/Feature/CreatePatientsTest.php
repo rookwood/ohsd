@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Employer;
 use App\Patient;
-use App\User;
+use App\Users\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

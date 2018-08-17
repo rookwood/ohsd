@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\User;
+use App\Users\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 

@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Audiogram;
 use App\Observers\AudiogramObserver;
 use App\Observers\UserObserver;
-use App\User;
+use App\Users\User;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

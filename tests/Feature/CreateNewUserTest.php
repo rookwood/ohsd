@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Users\User;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,14 +14,17 @@ class CreateNewUserTest extends TestCase
     /** @test */
     public function register_a_new_screening_provider()
     {
-    	$response = $this->post(route('users.store'), [
-    	    'firstname' => 'Some',
-            'lastname' => 'Audiologist',
-            'email' => 'someaudiologist@example.com',
-            'degree' => 'AuD',
-            'title' => 'audiologist',
-            'license' => 1234
-        ]);
+        $admin = factory(User::class)->state('admin')->create();
+
+    	$response = $this->actingAs($admin)
+            ->post(route('users.store'), [
+                'firstname' => 'Some',
+                'lastname' => 'Audiologist',
+                'email' => 'someaudiologist@example.com',
+                'degree' => 'AuD',
+                'title' => 'audiologist',
+                'license' => 1234
+            ]);
 
     	$this->assertDatabaseHas('users', [
             'firstname' => 'Some',
@@ -35,6 +38,31 @@ class CreateNewUserTest extends TestCase
     	$this->assertNotNull(User::whereFirstname('Some')->first()->password);
 
         $response->assertRedirect(route('users.create'));
+    }
+
+    /** @test */
+    public function guests_may_not_register_users()
+    {
+        $this->withExceptionHandling();
+
+        $response = $this->post(route('users.store'), $this->validData());
+        $response->assertRedirect(route('login'));
+        $this->assertEmpty(User::all());
+    }
+
+    /** @test */
+    public function nonadministrative_users_may_not_register_users()
+    {
+    	$this->withExceptionHandling();
+
+        $audiologist = factory(User::class)->state('audiologist')->create();
+
+        $response = $this->actingAs($audiologist)
+            ->post(route('users.store'), $this->validData());
+
+        $response->assertStatus(403);
+
+        $this->assertCount(1, User::all());
     }
 
     /** @test */
@@ -65,9 +93,11 @@ class CreateNewUserTest extends TestCase
     public function email_must_be_unique()
     {
         $this->withExceptionHandling();
+        $admin = factory(User::class)->state('admin')->create();
 
-        $response = Collection::times(2, function() {
-            return $this->from(route('users.create'))
+        $response = Collection::times(2, function() use ($admin) {
+            return $this->actingAs($admin)
+                ->from(route('users.create'))
                 ->post(route('users.store'), $this->validData());
         })->last();
 
@@ -76,7 +106,8 @@ class CreateNewUserTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('users.create'));
 
-        $this->assertCount(1, User::all());
+        // Admin user already exists, ensure no more users
+        $this->assertCount(2, User::all());
     }
 
     /** @test */
@@ -96,7 +127,10 @@ class CreateNewUserTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $response = $this->from(route('users.create'))
+        $admin = factory(User::class)->state('admin')->create();
+
+        $response = $this->actingAs($admin)
+            ->from(route('users.create'))
             ->post(route('users.store'), $data);
 
         $response->assertValidationError($error);
@@ -104,7 +138,8 @@ class CreateNewUserTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('users.create'));
 
-        $this->assertCount(0, User::all());
+        // Admin user already exists, ensure no more users
+        $this->assertCount(1, User::all());
     }
 
     protected function validData($overrides = [])

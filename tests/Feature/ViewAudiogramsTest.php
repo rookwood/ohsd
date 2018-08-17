@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Users\User;
 use App\Patient;
 use App\Audiogram;
 use Tests\TestCase;

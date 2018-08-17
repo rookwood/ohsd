@@ -3,7 +3,7 @@
 use App\Audiogram;
 use App\Patient;
 use App\Response;
-use App\User;
+use App\Users\User;
 use Faker\Generator as Faker;
 
 $factory->define(Audiogram::class, function (Faker $faker) {

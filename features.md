@@ -1,7 +1,7 @@
-#OSHA Hearing Screening Database
+# OSHA Hearing Screening Database
 
 
-####Storage of screening results
+#### Storage of screening results
 - [x] Serial audiograms
   - [x] Threshold data
   - [x] Pretest noise exposure
@@ -24,7 +24,7 @@
   - [x] Calculate automatically when new test added
 
 
-####Generate patient and employer letters
+#### Generate patient and employer letters
 - [ ] Results from STS
 - [ ] Recommendations
   - [ ] Letter to patient and employer

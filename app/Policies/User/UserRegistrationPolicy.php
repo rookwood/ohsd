@@ -2,10 +2,10 @@
 
 namespace App\Policies\User;
 
-use App\Policies\PolicyContract;
+use App\Policies\Policy;
 use App\Users\User;
 
-class UserRegistrationPolicy implements PolicyContract
+class UserRegistrationPolicy extends Policy
 {
 
     public function execute(User $user, $data = null)

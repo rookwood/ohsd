@@ -26,6 +26,11 @@ class AuthorizeByPolicyTest extends TestCase
 
                     return FakeFailing::class;
                 }
+
+                public function __invoke($action)
+                {
+                    return $this->get($action);
+                }
             };
         });
 

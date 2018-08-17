@@ -17,10 +17,10 @@ trait Authorizable
      */
     public function can($action, $data = null)
     {
-        $policy = app()->make('policy')->get($action);
+        $policy = app()->make('policy')($action);
 
         try {
-            $status = app()->make($policy)->execute($this, $data);
+            $status = app()->make($policy)($this, $data);
         } catch (ReflectionException $e) {
             throw new PolicyException("Policy $e does not exist.");
         }

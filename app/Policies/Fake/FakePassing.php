@@ -2,10 +2,10 @@
 
 namespace App\Policies\Fake;
 
-use App\Policies\PolicyContract;
+use App\Policies\Policy;
 use App\Users\User;
 
-class FakePassing implements PolicyContract
+class FakePassing extends Policy
 {
 
     public function execute(User $user, $data = null)

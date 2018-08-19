@@ -14,7 +14,7 @@ class UsersController extends Controller
 
     public function store(CreateUserRequest $request)
     {
-        User::create($request->all());
+        User::registerNew($request->all());
 
         return redirect(route('users.create'));
     }

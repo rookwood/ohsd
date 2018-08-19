@@ -2,9 +2,11 @@
 
 namespace App\Users;
 
+use App\Mail\CompleteUserRegistration;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
@@ -27,6 +29,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public static function registerNew(array $requestData)
+    {
+        return tap(static::create($requestData), function($user) {
+            Mail::to($user->email)
+                ->send(new CompleteUserRegistration($user));
+        });
+    }
 
     /**
      * APA style for life! We aren't some silly humanities discipline

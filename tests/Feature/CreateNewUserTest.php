@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Mail\CompleteUserRegistration;
 use App\Users\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -38,6 +41,23 @@ class CreateNewUserTest extends TestCase
     	$this->assertNotNull(User::whereFirstname('Some')->first()->password);
 
         $response->assertRedirect(route('users.create'));
+    }
+
+    /** @test */
+    public function send_email_to_new_user_with_password_reset_link()
+    {
+    	Mail::fake();
+
+    	$this->actingAs(factory(User::class)->state('admin')->create())
+            ->post(route('users.store'), $this->validData());
+
+    	// Newly created user
+    	$user = User::find(2);
+
+    	Mail::assertSent(CompleteUserRegistration::class, function ($mail) use ($user) {
+    	    return $mail->hasTo($this->validData()['email'])
+                && $mail->user->id == $user->id;
+        });
     }
 
     /** @test */

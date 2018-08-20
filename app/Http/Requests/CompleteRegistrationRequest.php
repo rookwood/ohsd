@@ -25,7 +25,7 @@ class CompleteRegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => ['required'],
+            'password' => ['required', 'confirmed'],
         ];
     }
 }

@@ -32,6 +32,12 @@ class CompleteRegistrationTest extends TestCase
     	$this->expectValidationErrorFromBadData('password', array_except($this->validData(), 'password'));
     }
 
+    /** @test */
+    public function password_must_be_confirmed()
+    {
+        $this->expectValidationErrorFromBadData('password', $this->validData(['password_confirmation' => 'nope']));
+    }
+
     protected function expectValidationErrorFromBadData($error, $data)
     {
         $this->withExceptionHandling();
@@ -53,7 +59,7 @@ class CompleteRegistrationTest extends TestCase
     {
         return array_merge([
             'token' => 'TEST_TOKEN',
-            'password' => 'secret', 
+            'password' => 'secret',
             'password_confirmation' => 'secret'
         ], $overrides);
     }

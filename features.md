@@ -13,10 +13,14 @@
   - [ ] Intake medical questionaire
   - [x] Basic demographics
 
-- [ ] Evaluator information
-  - [ ] Qualifications
-  - [ ] License number
-  - [ ] Degree
+- [x] Evaluator information
+  - [x] Qualifications
+  - [x] License number
+  - [x] Degree
+
+- [x] Evaluator registration
+ - [x] Creatable by admin only
+ - [x] Send email to new user to set password for account
 
 - [ ] Standard Threshold shift
   - [x] Without age adjustment

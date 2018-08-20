@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('degree')->nullable();
             $table->string('title')->nullable();
             $table->string('license')->nullable();
+            $table->string('registration_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

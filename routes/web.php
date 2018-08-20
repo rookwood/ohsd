@@ -33,4 +33,6 @@ Route::get('patients/new', 'PatientsController@create')->name('patients.create')
 Route::get('users/register', 'UsersController@create')->name('users.create');
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('registration/{token}', 'RegistrationController@create')->name('registration.create');
+
 Auth::routes();

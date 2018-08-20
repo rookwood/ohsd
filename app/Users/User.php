@@ -2,11 +2,12 @@
 
 namespace App\Users;
 
-use App\Mail\CompleteUserRegistration;
+use App\Mail\CompleteUserRegistrationEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -18,7 +19,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname', 'lastname', 'email', 'password', 'degree', 'title', 'license'
+        'firstname',
+        'lastname',
+        'email',
+        'password',
+        'degree',
+        'title',
+        'license',
+        'registration_token',
     ];
 
     /**
@@ -27,14 +35,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'registration_token',
     ];
 
     public static function registerNew(array $requestData)
     {
-        return tap(static::create($requestData), function($user) {
+        $userData = array_merge($requestData, ['registration_token' => Str::random(64)]);
+
+        return tap(static::create($userData), function($user) {
             Mail::to($user->email)
-                ->send(new CompleteUserRegistration($user));
+                ->send(new CompleteUserRegistrationEmail($user));
         });
     }
 

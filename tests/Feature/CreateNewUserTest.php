@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Mail\CompleteUserRegistration;
+use App\Mail\CompleteUserRegistrationEmail;
 use App\Users\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
@@ -38,7 +38,9 @@ class CreateNewUserTest extends TestCase
             'license'   => 1234
         ]);
 
-    	$this->assertNotNull(User::whereFirstname('Some')->first()->password);
+    	$newUser = User::whereFirstname('Some')->first();
+    	$this->assertNotNull($newUser->password);
+    	$this->assertNotNull($newUser->registration_token);
 
         $response->assertRedirect(route('users.create'));
     }
@@ -54,7 +56,7 @@ class CreateNewUserTest extends TestCase
     	// Newly created user
     	$user = User::find(2);
 
-    	Mail::assertSent(CompleteUserRegistration::class, function ($mail) use ($user) {
+    	Mail::assertSent(CompleteUserRegistrationEmail::class, function ($mail) use ($user) {
     	    return $mail->hasTo($this->validData()['email'])
                 && $mail->user->id == $user->id;
         });

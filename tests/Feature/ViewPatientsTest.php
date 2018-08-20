@@ -32,7 +32,7 @@ class ViewPatientsTest extends TestCase
     	$this->assertEquals('Jim', $response->data('patients')[0]['firstname']);
     	$this->assertEquals('Bob', $response->data('patients')[0]['lastname']);
     	$this->assertEquals(12345678, $response->data('patients')[0]['mrn']);
-    	$this->assertEquals('10/10/1970', $response->data('patients')[0]['birthdate']);
+    	$this->assertEquals('1970-10-10', $response->data('patients')[0]['birthdate']->toDateString());
     	$this->assertArrayNotHasKey('created_at', $response->data('patients')[0]);
     	$this->assertArrayNotHasKey('updated_at', $response->data('patients')[0]);
     }

@@ -15,16 +15,24 @@ class CreatePatientsTest extends TestCase
     /** @test */
     public function register_a_new_patient_with_new_employer()
     {
-        $response = $this->actingAs(new User)
-            ->post(route('patients.store'), $this->validData());
+        try {
+            $response = $this->actingAs(new User)
+                    ->post(route('patients.store'), $this->validData());
+        } catch (\Exception $e) {
+            dd($e->errors());
+        }
 
         $patient = Patient::first();
 
         $this->assertDatabaseHas('patients', [
-            'firstname' => 'Horace',
-            'lastname'  => 'Washburn',
-            'mrn'       => '12345678',
-            'birthdate' => '4/23/2218',
+            'firstname'   => 'Horace',
+            'lastname'    => 'Washburn',
+            'gender'      => 'male',
+            'mrn'         => '12345678',
+            'hire_date'   => '1970-10-10',
+            'birthdate'   => '2218-04-23',
+            'title'       => 'worker guy',
+            'employee_id' => 'ASDF1234',
         ]);
 
         $this->assertDatabaseHas('employers', [
@@ -67,7 +75,7 @@ class CreatePatientsTest extends TestCase
             'firstname' => 'Horace',
             'lastname'  => 'Washburn',
             'mrn'       => '12345678',
-            'birthdate' => '4/23/2218',
+            'birthdate' => '2218-04-23',
             'employer_id' => 1
         ]);
 
@@ -99,6 +107,21 @@ class CreatePatientsTest extends TestCase
     }
 
     /** @test */
+    public function gender_is_required()
+    {
+    	$this->expectValidationErrorFromBadData('gender', array_except($this->validData(), 'gender'));
+    }
+
+    /** @test */
+    public function gender_must_be_a_listed_option()
+    {
+        $data = $this->validData();
+        $data['gender'] = 'Apache Attack Helicopter';
+
+        $this->expectValidationErrorFromBadData('gender', $data);
+    }
+
+    /** @test */
     public function birthdate_is_required()
     {
     	$this->expectValidationErrorFromBadData('birthdate', array_except($this->validData(), 'birthdate'));
@@ -111,6 +134,15 @@ class CreatePatientsTest extends TestCase
     	$data['birthdate'] = 'way back when';
 
         $this->expectValidationErrorFromBadData('birthdate', $data);
+    }
+
+    /** @test */
+    public function hire_date_must_be_a_date()
+    {
+    	$data = $this->validData();
+    	$data['hire_date'] = 'bout 14 years ago';
+
+        $this->expectValidationErrorFromBadData('hire_date', $data);
     }
 
     /** @test */
@@ -190,6 +222,10 @@ class CreatePatientsTest extends TestCase
             'firstname' => 'Horace',
             'lastname' => 'Washburn',
             'mrn' => '12345678',
+            'hire_date' => '10/10/1970',
+            'gender' => 'male',
+            'title' => 'worker guy',
+            'employee_id' => 'ASDF1234',
             'birthdate' => '4/23/2218',
             'employer_id' => null,
             'employer' => [

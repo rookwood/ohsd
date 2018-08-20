@@ -31,6 +31,8 @@ class CreatePatientRequest extends FormRequest
             'lastname' => ['required'],
             'mrn' => ['nullable', 'integer'],
             'birthdate' => ['required', 'date'],
+            'gender' => ['required', 'in:male,female,transgener-male,transgender-female,non-binary,other,undisclosed'],
+            'hire_date' => ['nullable', 'date'],
             'employer_id' => ['nullable', 'required_without:employer'],
             'employer' => ['nullable', 'required_without:employer_id', 'array'],
             'employer.name' => ['nullable', 'required_without:employer_id'],

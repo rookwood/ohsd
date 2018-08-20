@@ -6,8 +6,10 @@ use App\Mail\CompleteUserRegistrationEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Null_;
 
 class User extends Authenticatable
 {
@@ -46,6 +48,20 @@ class User extends Authenticatable
             Mail::to($user->email)
                 ->send(new CompleteUserRegistrationEmail($user));
         });
+    }
+
+    /**
+     * Remove registration token and set user-selected password
+     *
+     * @param string $password
+     * @return User
+     */
+    public function completeRegistration($password)
+    {
+        return tap($this)->update([
+            'password' => Hash::make($password),
+            'registration_token' => null
+        ]);
     }
 
     /**

@@ -12,6 +12,28 @@ class CompleteRegistrationTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function show_completion_form_when_using_a_valid_token()
+    {
+        $user = factory(User::class)->state('audiologist')->create([
+            'registration_token' => $this->validData()['token']
+        ]);
+
+        $response = $this->get(route('registration.create', $user->registration_token));
+        $response->assertOk();
+        $response->assertViewIs('registration.create');
+        $response->assertSee('Complete registration');
+    }
+
+    /** @test */
+    public function viewing_the_registration_completion_form_with_a_bad_token_returns_a_404()
+    {
+        $this->withExceptionHandling();
+
+        $response = $this->get(route('registration.create', 'BAD_TOKEN'));
+        $response->assertStatus(404);
+    }
+
+    /** @test */
     public function complete_registration_using_provided_url()
     {
         $user = factory(User::class)->state('audiologist')->create([

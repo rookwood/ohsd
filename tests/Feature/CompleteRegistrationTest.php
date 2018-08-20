@@ -38,6 +38,18 @@ class CompleteRegistrationTest extends TestCase
         $this->expectValidationErrorFromBadData('password', $this->validData(['password_confirmation' => 'nope']));
     }
 
+    /** @test */
+    public function registration_token_is_required()
+    {
+        $this->expectValidationErrorFromBadData('token', array_except($this->validData(), 'token'));
+    }
+
+    /** @test */
+    public function registration_token_must_be_64_characters_in_length()
+    {
+        $this->expectValidationErrorFromBadData('token', $this->validData(['token' => 'short_token']));
+    }
+
     protected function expectValidationErrorFromBadData($error, $data)
     {
         $this->withExceptionHandling();
@@ -58,7 +70,7 @@ class CompleteRegistrationTest extends TestCase
     protected function validData($overrides = [])
     {
         return array_merge([
-            'token' => 'TEST_TOKEN',
+            'token' => 'TEST_TOKEN_THAT_IS_64_CHARACTERS_LONG_1234567890_ABCDEFGHIJKLOMN',
             'password' => 'secret',
             'password_confirmation' => 'secret'
         ], $overrides);

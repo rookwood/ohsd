@@ -26,6 +26,7 @@ class CompleteRegistrationRequest extends FormRequest
     {
         return [
             'password' => ['required', 'confirmed'],
+            'token' => ['required', 'size:64']
         ];
     }
 }

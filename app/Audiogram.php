@@ -80,6 +80,11 @@ class Audiogram extends Model
         return $this->hearing_protection;
     }
 
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
     public function responses()
     {
         return $this->hasMany(Response::class);

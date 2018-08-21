@@ -22,9 +22,9 @@
  - [x] Creatable by admin only
  - [x] Send email to new user to set password for account
 
-- [ ] Standard Threshold shift
+- [x] Standard Threshold shift
   - [x] Without age adjustment
-  - [ ] With age adjustment
+  - [x] With age adjustment
   - [x] Calculate automatically when new test added
 
 

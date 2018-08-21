@@ -18,6 +18,13 @@ class AgeRelatedThresholdAdjustment
      */
     const MAXIMUM_AGE = 60;
 
+    /**
+     * From OSHA document "Calculations and application of age corrections to audiograms"
+     * Standard Number 1910.95 App F
+     * Tables F-1 and F-2
+     *
+     * @var array
+     */
     protected static $ageRelatedOffsets = [
         'male'   => [
             20 => ['1kHz' => 5,  '2kHz' => 3,  '3kHz' => 4,  '4kHz' => 5,  '6kHz' => 8],
@@ -155,17 +162,19 @@ class AgeRelatedThresholdAdjustment
         return min(static::MAXIMUM_AGE, max(static::MINIMUM_AGE, $testDate->diffInYears($birthDate)));
     }
 
+    /**
+     * Used for calculation when not accounting for age-related hearing loss
+     *
+     * @return array
+     */
     public function nullAdjustment()
     {
         return [1000 => 0, 2000 => 0, 3000 => 0, 4000 => 0, 5000 => 0];
     }
 
-    public function __invoke(Patient $patient, Audiogram $baseline, Audiogram $current)
-    {
-        return $this->forPatient($patient, $baseline, $current);
-    }
-
     /**
+     * Build an array of adjustments by subtracting age-frequency offset for baseline
+     * evaluation from the current evaluation.
      * @param $baselineOffsets
      * @param $currentOffsets
      * @return array
@@ -173,7 +182,22 @@ class AgeRelatedThresholdAdjustment
     protected function calculateAdjustments($baselineOffsets, $currentOffsets): array
     {
         return collect($baselineOffsets)->mapWithKeys(function ($adjustment, $frequency) use ($currentOffsets) {
-            return [Str::removeHertzAbbreviation($frequency) => $currentOffsets[$frequency] - $adjustment];
+            return [$this->translateFrequency($frequency) => $currentOffsets[$frequency] - $adjustment];
         })->all();
+    }
+
+    /**
+     * Change frequency string to integer (e.g. 1kHz -> 1000)
+     * @param  string $frequency
+     * @return string
+     */
+    protected function translateFrequency($frequency)
+    {
+        return Str::removeHertzAbbreviation($frequency);
+    }
+
+    public function __invoke(Patient $patient, Audiogram $baseline, Audiogram $current)
+    {
+        return $this->forPatient($patient, $baseline, $current);
     }
 }

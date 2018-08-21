@@ -27,6 +27,8 @@ class Audiogram extends Model
         'baseline'           => 'boolean',
     ];
 
+    protected $dates = ['date'];
+
     public static function newScreeningForPatient(Patient $patient, $testData, $responses)
     {
         $audiogram = static::create(array_merge($testData, [

@@ -3,7 +3,9 @@
 namespace Tests\Unit;
 
 use App\Audiogram;
+use App\Patient;
 use App\StandardThresholdShiftDetermination;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -42,5 +44,27 @@ class StandardThresholdShiftDeterminationTest extends TestCase
         $stsd = new StandardThresholdShiftDetermination;
 
         $this->assertFalse($stsd->test($baselineAudiogram, $currentAudiogram));
+    }
+
+    /** @test */
+    public function use_age_related_adjustments_when_a_patient_is_provided()
+    {
+        $patient = factory(Patient::class)->create([
+            'gender'    => 'male',
+            'birthdate' => Carbon::now()->subYears(40)->subDays(7),
+        ]);
+
+        $baselineAudiogram = factory(Audiogram::class)->state('mild-loss')->create([
+            'patient_id' => $patient->id,
+            'date' => Carbon::now()->subYears(20),
+        ]);
+        $currentAudiogram  = factory(Audiogram::class)->state('moderate-loss')->create([
+            'patient_id' => $patient->id,
+            'date' => Carbon::today()
+        ]);
+
+        $stsd = new StandardThresholdShiftDetermination;
+
+        $this->assertFalse($stsd->test($baselineAudiogram, $currentAudiogram, StandardThresholdShiftDetermination::USE_AGE_ADJUSTMENT));
     }
 }

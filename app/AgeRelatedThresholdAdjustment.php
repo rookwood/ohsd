@@ -2,10 +2,22 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class AgeRelatedThresholdAdjustment
 {
+    /**
+     * Minimum age available for OSHA Data
+     * @var integer
+     */
+    const MINIMUM_AGE = 20;
+
+    /**
+     * Maximum age for OSHA Data
+     */
+    const MAXIMUM_AGE = 60;
+
     protected static $data = [
         'male'   => [
             20 => ['1kHz' => 5,  '2kHz' => 3,  '3kHz' => 4,  '4kHz' => 5,  '6kHz' => 8],
@@ -96,14 +108,24 @@ class AgeRelatedThresholdAdjustment
     ];
 
     /**
-     * @param Patient $patient
+     * @param Patient   $patient
+     * @param Audiogram $baseline
+     * @param Audiogram $current
      * @return array
      */
-    public function forPatient(Patient $patient)
+    public function forPatient(Patient $patient, Audiogram $baseline, Audiogram $current)
     {
         $gender = $this->genderAssignment($patient->gender);
 
-        return static::$data[$gender][$patient->birthdate->age];
+        $baselineAge = $this->ageAt($patient->birthdate, $baseline->date);
+        $testAge = $this->ageAt($patient->birthdate, $current->date);
+
+        $baselineAdjustments = static::$data[$gender][$baselineAge];
+        $currentAdjustments = static::$data[$gender][$testAge];
+
+        return collect($baselineAdjustments)->mapWithKeys(function($adjustment, $frequency) use ($currentAdjustments) {
+            return [Str::removeHertzAbbreviation($frequency) => $currentAdjustments[$frequency] - $adjustment];
+        })->all();
     }
 
     /**
@@ -125,13 +147,26 @@ class AgeRelatedThresholdAdjustment
         return 'male';
     }
 
-    public function nullAdjustment()
+    /**
+     * Return the patient's age on the day of the test bounded by the maximum
+     * and minimum in available data.
+     *
+     * @param Carbon $birthDate
+     * @param Carbon $testDate
+     * @return mixed
+     */
+    public function ageAt(Carbon $birthDate, Carbon $testDate)
     {
-        return ['1kHz' => 0, '2kHz' => 0, '3kHz' => 0, '4kHz' => 0, '6kHz' => 0];
+        return min(static::MAXIMUM_AGE, max(static::MINIMUM_AGE, $testDate->diffInYears($birthDate)));
     }
 
-    public function __invoke(Patient $patient)
+    public function nullAdjustment()
     {
-        return $this->forPatient($patient);
+        return [1000 => 0, 2000 => 0, 3000 => 0, 4000 => 0, 5000 => 0];
+    }
+
+    public function __invoke(Patient $patient, Audiogram $baseline, Audiogram $current)
+    {
+        return $this->forPatient($patient, $baseline, $current);
     }
 }

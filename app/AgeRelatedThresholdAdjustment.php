@@ -18,7 +18,7 @@ class AgeRelatedThresholdAdjustment
      */
     const MAXIMUM_AGE = 60;
 
-    protected static $data = [
+    protected static $ageRelatedOffsets = [
         'male'   => [
             20 => ['1kHz' => 5,  '2kHz' => 3,  '3kHz' => 4,  '4kHz' => 5,  '6kHz' => 8],
             21 => ['1kHz' => 5,  '2kHz' => 3,  '3kHz' => 4,  '4kHz' => 5,  '6kHz' => 8],
@@ -117,23 +117,18 @@ class AgeRelatedThresholdAdjustment
     {
         $gender = $this->genderAssignment($patient->gender);
 
-        $baselineAge = $this->ageAt($patient->birthdate, $baseline->date);
-        $testAge = $this->ageAt($patient->birthdate, $current->date);
+        $baselineOffsets = static::$ageRelatedOffsets[$gender][$this->ageAt($patient->birthdate, $baseline->date)];
+        $currentOffsets  = static::$ageRelatedOffsets[$gender][$this->ageAt($patient->birthdate, $current->date)];
 
-        $baselineAdjustments = static::$data[$gender][$baselineAge];
-        $currentAdjustments = static::$data[$gender][$testAge];
-
-        return collect($baselineAdjustments)->mapWithKeys(function($adjustment, $frequency) use ($currentAdjustments) {
-            return [Str::removeHertzAbbreviation($frequency) => $currentAdjustments[$frequency] - $adjustment];
-        })->all();
+        return $this->calculateAdjustments($baselineOffsets, $currentOffsets);
     }
 
     /**
-     * OSHA documents provide corrections for only male and female with no guidance
-     * on assessing age adjustments for other genders.  This method is a good-faith
+     * OSHA documents provide corrections for only male and female with no guidance on
+     * assessing age-related adjustments for other genders.  This method is a good-faith
      * attempt to rectify that by using the more liberal "male" adjustments to minimize
-     * type I errors.  There are, I am sure, very valid arguments to be made to minimize
-     * type II errors, and I am open to any other approach if someone has a suggestion.
+     * type I errors.  There are, I believe, very valid arguments to be made to minimize
+     * type II errors, and I am open to a different approach if someone has a suggestion.
      *
      * @param  string $gender
      * @return string
@@ -168,5 +163,17 @@ class AgeRelatedThresholdAdjustment
     public function __invoke(Patient $patient, Audiogram $baseline, Audiogram $current)
     {
         return $this->forPatient($patient, $baseline, $current);
+    }
+
+    /**
+     * @param $baselineOffsets
+     * @param $currentOffsets
+     * @return array
+     */
+    protected function calculateAdjustments($baselineOffsets, $currentOffsets): array
+    {
+        return collect($baselineOffsets)->mapWithKeys(function ($adjustment, $frequency) use ($currentOffsets) {
+            return [Str::removeHertzAbbreviation($frequency) => $currentOffsets[$frequency] - $adjustment];
+        })->all();
     }
 }

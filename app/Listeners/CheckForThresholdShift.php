@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\TestResultWasLogged;
+use App\Events\ThresholdShiftDetected;
 use App\StandardThresholdShiftDetermination;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,8 +35,10 @@ class CheckForThresholdShift
     {
         $audiogram = $event->audiogram;
 
-        if ($this->stsd->test($audiogram->getBaseline(), $audiogram)) {
+        if ($this->stsd->test($audiogram->getBaseline(), $audiogram, StandardThresholdShiftDetermination::USE_AGE_ADJUSTMENT)) {
             $audiogram->markAsNewBaseline();
+
+            event(new ThresholdShiftDetected($audiogram));
         }
 
         return;

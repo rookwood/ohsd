@@ -67,13 +67,14 @@ class AudiogramTest extends TestCase
     /** @test */
     public function audiogram_with_new_threshold_shift_becomes_baseline()
     {
-         $audiogramA = factory(Audiogram::class)
+        $patient = factory(Patient::class)->create();
+        $audiogramA = factory(Audiogram::class)
             ->state('normal')
-            ->create(['patient_id' => 1]);
+            ->create(['patient_id' => $patient->id]);
 
         $audiogramB = factory(Audiogram::class)
             ->state('moderate-loss')
-            ->create(['patient_id' => 1]);
+            ->create(['patient_id' => $patient->id]);
 
         // Simulate saving through actual static constructor
         event(new TestResultWasLogged($audiogramB));
@@ -84,16 +85,17 @@ class AudiogramTest extends TestCase
     /** @test */
     public function audiogram_showing_threshold_shift_still_gets_previous_record_as_baseline()
     {
+        $patient = factory(Patient::class)->create();
         $original = factory(Audiogram::class)
             ->state('normal')
             ->create([
-                'patient_id' => 1,
+                'patient_id' => $patient->id,
                 'created_at' => Carbon::now()->subDays(2),
             ]);
 
         $firstLossDetected = factory(Audiogram::class)
             ->state('moderate-loss')->create([
-                'patient_id' => 1,
+                'patient_id' => $patient->id,
                 'created_at' => Carbon::now()->subDays(1),
             ]);
 
@@ -102,7 +104,7 @@ class AudiogramTest extends TestCase
 
         $followUpTest = factory(Audiogram::class)
             ->state('moderate-loss')->create([
-                'patient_id' => 1,
+                'patient_id' => $patient->id,
                 'created_at' => Carbon::now(),
             ]);
 

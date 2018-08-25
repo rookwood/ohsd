@@ -45,6 +45,11 @@ class Patient extends Model
         return $this->hasMany(Audiogram::class);
     }
 
+    public function intakeForms()
+    {
+        return $this->hasMany(IntakeForm::class);
+    }
+
     public function setBirthdateAttribute($value)
     {
         $this->attributes['birthdate'] = Carbon::parse($value)->toDateString();

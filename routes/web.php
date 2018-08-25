@@ -29,6 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('users/new', 'UsersController@store')->name('users.store');
 });
 
+Route::post('intake/{patient}', 'IntakeFormController@store')->name('intake.store');
+
 Route::get('patients/new', 'PatientsController@create')->name('patients.create');
 Route::get('users/register', 'UsersController@create')->name('users.create');
 Route::get('/home', 'HomeController@index')->name('home');

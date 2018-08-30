@@ -14,10 +14,8 @@ class PatientCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        $this->collection->transform(function ($patient) {
+        return ['data' => $this->collection->map(function ($patient) {
             return new PatientResource($patient);
-        });
-
-        return ['data' => $this->collection];
+        })];
     }
 }

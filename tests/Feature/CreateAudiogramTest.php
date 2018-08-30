@@ -28,19 +28,21 @@ class CreateAudiogramTest extends TestCase
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'firstname',
-            'lastname',
-            'mrn',
-            'birthdate',
-            'audiograms' => [
-                '*' => [
-                    'responses' => [
-                        '*' => [
-                            'amplitude',
-                            'frequency',
-                            'test',
-                            'stimulus',
-                            'ear'
+            'data' => [
+                'firstname',
+                'lastname',
+                'mrn',
+                'birthdate',
+                'audiograms' => [
+                    '*' => [
+                        'responses' => [
+                            '*' => [
+                                'amplitude',
+                                'frequency',
+                                'test',
+                                'stimulus',
+                                'ear'
+                            ],
                         ],
                     ],
                 ],

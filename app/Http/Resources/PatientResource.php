@@ -24,7 +24,9 @@ class PatientResource extends JsonResource
             'title' => $this->title,
             'employee_id' => $this->employee_id,
             'employer' => $this->employer,
-            'audiograms' => new AudiogramCollection($this->audiograms)
+            'audiograms' => $this->audiograms->map(function($audiogram) {
+                return new AudiogramResource($audiogram);
+            })
         ];
     }
 }

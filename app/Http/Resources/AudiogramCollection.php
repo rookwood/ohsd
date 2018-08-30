@@ -14,10 +14,8 @@ class AudiogramCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        $this->collection->transform(function ($patient) {
-            return new AudiogramResource($patient);
-        });
-
-        return parent::toArray($request);
+        return ['data' => $this->collection->map(function($audiogram) {
+            return new AudiogramResource($audiogram);
+        })];
     }
 }

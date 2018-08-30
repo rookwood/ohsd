@@ -23,10 +23,9 @@ class ViewAudiogramsTest extends TestCase
         ]);
 
         $response = $this->actingAs($audiologist)
-            ->get(route('patients.show', $patient));
+            ->json('GET', route('patients.show', $patient));
 
         $response->assertSuccessful();
-        $response->assertViewIs('patients.show');
 
         $this->assertCount(3, $response->data('audiograms'));
         $audiograms->assertEquals($response->data('audiograms'));

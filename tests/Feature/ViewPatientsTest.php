@@ -23,18 +23,18 @@ class ViewPatientsTest extends TestCase
     	$patientB = factory(Patient::class)->create();
     	$patientC = factory(Patient::class)->create();
 
-    	$response = $this->actingAs(new User)->get(route('patients.index'));
+    	$response = $this->actingAs(new User)->json('GET', route('patients.index'));
 
     	$response->assertOk();
+    	$decodedResponse = $response->decodeResponseJson();
 
-    	$this->assertCount(3, $response->data('patients'));
-    	$this->assertTrue($patientA->is($response->data('patients')[0]));
-    	$this->assertEquals('Jim', $response->data('patients')[0]['firstname']);
-    	$this->assertEquals('Bob', $response->data('patients')[0]['lastname']);
-    	$this->assertEquals(12345678, $response->data('patients')[0]['mrn']);
-    	$this->assertEquals('1970-10-10', $response->data('patients')[0]['birthdate']->toDateString());
-    	$this->assertArrayNotHasKey('created_at', $response->data('patients')[0]);
-    	$this->assertArrayNotHasKey('updated_at', $response->data('patients')[0]);
+    	$this->assertCount(3, $decodedResponse['data']);
+    	$this->assertEquals('Jim', $decodedResponse['data'][0]['firstname']);
+    	$this->assertEquals('Bob', $decodedResponse['data'][0]['lastname']);
+    	$this->assertEquals(12345678, $decodedResponse['data'][0]['mrn']);
+    	$this->assertEquals('1970-10-10', $decodedResponse['data'][0]['birthdate']);
+    	$this->assertArrayNotHasKey('created_at', $decodedResponse['data'][0]);
+    	$this->assertArrayNotHasKey('updated_at', $decodedResponse['data'][0]);
     }
 
     /** @test */
@@ -44,10 +44,9 @@ class ViewPatientsTest extends TestCase
 
         factory(Patient::class, 3)->create();
 
-    	$response = $this->get(route('patients.index'));
+    	$response = $this->json('GET', route('patients.index'));
 
-    	$response->assertStatus(302);
-    	$response->assertRedirect('/login');
+    	$response->assertStatus(401);
     }
 
     /** @test */
@@ -57,10 +56,9 @@ class ViewPatientsTest extends TestCase
 
         $patient = factory(Patient::class)->create();
 
-        $response = $this->get(route('patients.show', $patient));
+        $response = $this->json('GET', route('patients.show', $patient));
 
-        $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $response->assertStatus(401);
     }
 
     /** @test */
@@ -68,9 +66,8 @@ class ViewPatientsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $response = $this->get(route('patients.show', 'not-a-patient'));
+        $response = $this->json('GET', route('patients.show', 'not-a-patient'));
 
-        $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $response->assertStatus(401);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAudiogramRequest;
+use App\Http\Resources\PatientResource;
 use App\Patient;
 
 class AudiogramsController extends Controller
@@ -11,7 +12,7 @@ class AudiogramsController extends Controller
     {
         $patient->logHearingScreeningResults($request->except('responses'), $request->get('responses'));
 
-        return redirect()->route('patients.show', $patient);
+        return response()->json(new PatientResource($patient), 201);
     }
 
     public function create()

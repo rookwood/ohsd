@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePatientRequest;
+use App\Http\Resources\PatientCollection;
 use App\Http\Resources\PatientResource;
 use App\Patient;
 
@@ -10,7 +11,7 @@ class PatientsController extends Controller
 {
     public function index()
     {
-        return view('patients.index', ['patients' => PatientResource::collection(Patient::all())]);
+        return response()->json(new PatientCollection(Patient::all()));
     }
 
     public function show(Patient $patient)
@@ -28,6 +29,6 @@ class PatientsController extends Controller
             $patient = Patient::createWithEmployer($request->all(), $request->get('employer'));
         }
 
-        return redirect()->route('patients.show', $patient);
+        return response()->json(new PatientResource($patient), 201);
     }
 }

@@ -81,10 +81,9 @@ class CompleteRegistrationTest extends TestCase
             'password' => 'correct horse battery staple'
         ]);
 
-        $response = $this->post(route('registration.store'), $data);
+        $response = $this->json('POST', route('registration.store'), $data);
 
         $response->assertValidationError($error);
-        $response->assertStatus(302);
         $this->assertNotNull($user->fresh()->registration_token);
         $this->assertFalse(Hash::check($this->validData()['password'], $user->fresh()->password));
     }

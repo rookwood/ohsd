@@ -26,8 +26,26 @@ class CreateAudiogramTest extends TestCase
         $response = $this->actingAs($user)
             ->post(route('audiograms.store', $patient), $this->validData());
 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('patients.show', $patient));
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'firstname',
+            'lastname',
+            'mrn',
+            'birthdate',
+            'audiograms' => [
+                '*' => [
+                    'responses' => [
+                        '*' => [
+                            'amplitude',
+                            'frequency',
+                            'test',
+                            'stimulus',
+                            'ear'
+                        ],
+                    ],
+                ],
+            ],
+        ]);
 
         Event::assertDispatched(TestResultWasLogged::class, function($event) {
             return $event->audiogram->id === Audiogram::first()->id;
@@ -240,11 +258,7 @@ class CreateAudiogramTest extends TestCase
         $patient = factory(Patient::class)->create();
 
         $response = $this->actingAs($user)
-            ->from(route('audiograms.create', $patient))
-            ->post(route('audiograms.store', $patient), $data);
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('audiograms.create', $patient));
+            ->json('POST', route('audiograms.store', $patient), $data);
 
         $response->assertValidationError($error);
 

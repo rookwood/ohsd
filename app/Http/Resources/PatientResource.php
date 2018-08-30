@@ -18,7 +18,13 @@ class PatientResource extends JsonResource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'mrn' => $this->mrn,
-            'birthdate' => $this->birthdate
+            'birthdate' => $this->birthdate->format('Y-m-d'),
+            'gender' => $this->gender,
+            'hire_date' => $this->hire_date,
+            'title' => $this->title,
+            'employee_id' => $this->employee_id,
+            'employer' => $this->employer,
+            'audiograms' => new AudiogramCollection($this->audiograms)
         ];
     }
 }

@@ -18,8 +18,6 @@ class CreatePatientsTest extends TestCase
         $response = $this->actingAs(new User)
             ->post(route('patients.store'), $this->validData());
 
-        $patient = Patient::first();
-
         $this->assertDatabaseHas('patients', [
             'firstname'   => 'Horace',
             'lastname'    => 'Washburn',
@@ -41,8 +39,19 @@ class CreatePatientsTest extends TestCase
             'phone'   => '(901)678-0000',
         ]);
 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('patients.show', $patient));
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'firstname',
+            'lastname',
+            'gender',
+            'mrn',
+            'birthdate',
+            'employer',
+            'hire_date',
+            'title',
+            'employee_id',
+            'audiograms'
+        ]);
     }
 
     /** @test */
@@ -75,8 +84,19 @@ class CreatePatientsTest extends TestCase
             'employer_id' => 1
         ]);
 
-        $response->assertRedirect(route('patients.show', 1));
-        $response->assertStatus(302);
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'firstname',
+            'lastname',
+            'gender',
+            'mrn',
+            'birthdate',
+            'employer',
+            'hire_date',
+            'title',
+            'employee_id',
+            'audiograms'
+        ]);
 
         $this->assertCount(1, Employer::all());
     }
@@ -200,16 +220,12 @@ class CreatePatientsTest extends TestCase
         $this->withExceptionHandling();
 
         $response = $this->actingAs(new User)
-            ->from(route('patients.create'))
-            ->post(route('patients.store'), $data);
+            ->json('POST', route('patients.store'), $data);
 
         $response->assertValidationError($error);
 
         $this->assertEmpty(Patient::all());
         $this->assertEmpty(Employer::all());
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('patients.create'));
     }
 
     protected function validData($overrides = [])

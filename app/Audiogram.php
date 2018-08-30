@@ -29,6 +29,8 @@ class Audiogram extends Model
 
     protected $dates = ['date'];
 
+    protected $with = ['responses'];
+
     public static function newScreeningForPatient(Patient $patient, $testData, $responses)
     {
         $audiogram = static::create(array_merge($testData, [

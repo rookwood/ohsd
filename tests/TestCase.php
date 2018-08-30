@@ -22,8 +22,8 @@ abstract class TestCase extends BaseTestCase
         });
 
         TestResponse::macro('assertValidationError', function($field) {
-            $this->assertSessionHasErrors($field);
-
+            $this->assertStatus(422);
+            Assert::assertArrayHasKey($field, $this->decodeResponseJson()['errors']);
             return $this;
         });
 

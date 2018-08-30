@@ -18,7 +18,7 @@ class PatientIntakeInformationTest extends TestCase
         Carbon::setTestNow(Carbon::parse('8/24/2018'));
         $patient = factory(Patient::class)->create();
 
-        $response = $this->post(route('intake.store', $patient->id), $this->validData());
+        $response = $this->json('POST', route('intake.store', $patient->id), $this->validData());
 
         $response->assertStatus(201);
 

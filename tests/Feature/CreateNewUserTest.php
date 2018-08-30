@@ -119,14 +119,10 @@ class CreateNewUserTest extends TestCase
 
         $response = Collection::times(2, function() use ($admin) {
             return $this->actingAs($admin)
-                ->from(route('users.create'))
-                ->post(route('users.store'), $this->validData());
+                ->json('POST', route('users.store'), $this->validData());
         })->last();
 
         $response->assertValidationError('email');
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('users.create'));
 
         // Admin user already exists, ensure no more users
         $this->assertCount(2, User::all());
@@ -152,13 +148,9 @@ class CreateNewUserTest extends TestCase
         $admin = factory(User::class)->state('admin')->create();
 
         $response = $this->actingAs($admin)
-            ->from(route('users.create'))
-            ->post(route('users.store'), $data);
+            ->json('POST', route('users.store'), $data);
 
         $response->assertValidationError($error);
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('users.create'));
 
         // Admin user already exists, ensure no more users
         $this->assertCount(1, User::all());

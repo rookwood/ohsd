@@ -15,12 +15,8 @@ class CreatePatientsTest extends TestCase
     /** @test */
     public function register_a_new_patient_with_new_employer()
     {
-        try {
-            $response = $this->actingAs(new User)
-                    ->post(route('patients.store'), $this->validData());
-        } catch (\Exception $e) {
-            dd($e->errors());
-        }
+        $response = $this->actingAs(new User)
+            ->post(route('patients.store'), $this->validData());
 
         $patient = Patient::first();
 

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\IntakeForm;
 use App\Patient;
+use App\Users\User;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,8 +18,10 @@ class PatientIntakeInformationTest extends TestCase
     {
         Carbon::setTestNow(Carbon::parse('8/24/2018'));
         $patient = factory(Patient::class)->create();
+        $audiologist = factory(User::class)->state('audiologist')->create();
 
-        $response = $this->json('POST', route('intake.store', $patient->id), $this->validData());
+        $response = $this->actingAs($audiologist)
+            ->json('POST', route('intake.store', $patient->id), $this->validData());
 
         $response->assertStatus(201);
 
@@ -84,7 +87,9 @@ class PatientIntakeInformationTest extends TestCase
             'date' => Carbon::today()
         ]);
 
-        $response = $this->get(route('intake.create', $patient));
+        $audiologist = factory(User::class)->state('audiologist')->create();
+
+        $response = $this->actingAs($audiologist)->get(route('intake.create', $patient));
         $response->assertOk();
         $response->assertJsonStructure([
             'data' => [

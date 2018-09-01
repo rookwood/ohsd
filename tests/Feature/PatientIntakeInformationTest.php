@@ -58,6 +58,20 @@ class PatientIntakeInformationTest extends TestCase
     }
 
     /** @test */
+    public function unauthenticated_users_cannot_record_patient_medical_information()
+    {
+        $this->withExceptionHandling();
+
+        $patient = factory(Patient::class)->create();
+
+        $response = $this->json('POST', route('intake.store', $patient->id), $this->validData());
+
+        $response->assertStatus(401);
+
+        $this->assertEmpty(IntakeForm::all());
+    }
+
+    /** @test */
     public function new_intake_form_starts_with_data_from_previous_encounter()
     {
     	$patient = factory(Patient::class)->create();
@@ -116,6 +130,25 @@ class PatientIntakeInformationTest extends TestCase
         $this->assertEquals($intakeB->hearing, $responseIntakeData['hearing']);
         $this->assertEquals($intakeB->health, $responseIntakeData['health']);
         $this->assertEquals($intakeB->hearing_loss, $responseIntakeData['hearing_loss']);
+    }
+
+    /** @test */
+    public function unauthenticated_users_start_a_form_for_new_encounter()
+    {
+        $this->withExceptionHandling();
+
+        $patient = factory(Patient::class)->create();
+        factory(IntakeForm::class)->create([
+            'patient_id' => $patient->id,
+            'date'       => Carbon::now()->subYear()
+        ]);
+
+        $response = $this->json('GET', route('intake.create', $patient));
+
+        $response->assertStatus(401);
+
+        // 1 existing, none created
+        $this->assertCount(1, IntakeForm::all());
     }
 
     /** @test */

@@ -32,7 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('intake/{patient}/new', 'IntakeFormController@create')->name('intake.create');
 });
 
-Route::get('patients/new', 'PatientsController@create')->name('patients.create');
 Route::get('users/register', 'UsersController@create')->name('users.create');
 Route::get('/home', 'HomeController@index')->name('home');
 

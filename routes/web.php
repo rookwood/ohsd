@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('intake/{patient}', 'IntakeFormController@store')->name('intake.store');
     Route::get('intake/{patient}/new', 'IntakeFormController@create')->name('intake.create');
+    Route::post('intake/{form}/update', 'IntakeFormController@update')->name('intake.update');
 });
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
@@ -38,6 +39,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('registration/{token}', 'RegistrationController@create')->name('registration.create');
 Route::post('registration/complete', 'RegistrationController@store')->name('registration.store');
 
-Route::post('intake/{form}/update', 'IntakeFormController@update')->name('intake.update');
 
 Auth::routes();

@@ -189,6 +189,29 @@ class PatientIntakeInformationTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function unauthenticated_users_may_not_update_intake_information()
+    {
+        $this->withExceptionHandling();
+
+    	$form = factory(IntakeForm::class)->create([
+            'hearing' => 'super awesome',
+            'health'  => 'no cancer here',
+        ]);
+
+        $response = $this->json('POST', route('intake.update', $form),
+            array_merge($form->toArray(), [
+                    'hearing' => 'poor',
+                    'health'  => 'poor',
+            ]
+        ));
+
+        $response->assertStatus(401);
+
+        $this->assertNotEquals('poor', $form->fresh()->hearing);
+        $this->assertNotEquals('poor', $form->fresh()->health);
+    }
+
     protected function validData($overrides = [])
     {
         return array_merge([

@@ -24,4 +24,11 @@ class IntakeFormController extends Controller
 
         return response()->json($form, 201);
     }
+
+    public function update(Request $request, IntakeForm $form)
+    {
+        $form->update($request->all());
+
+        return response()->json(['data' => new IntakeFormResource($form)]);
+    }
 }

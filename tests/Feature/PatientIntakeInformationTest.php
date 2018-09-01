@@ -118,6 +118,39 @@ class PatientIntakeInformationTest extends TestCase
         $this->assertEquals($intakeB->hearing_loss, $responseIntakeData['hearing_loss']);
     }
 
+    /** @test */
+    public function update_existing_intake_form()
+    {
+    	$form = factory(IntakeForm::class)->create([
+    	    'hearing' => 'good',
+            'health' => 'good',
+        ]);
+
+    	$response = $this->json('POST', route('intake.update', $form),
+            array_merge($form->toArray(), [
+                'hearing' => 'poor',
+                'health' => 'poor',
+            ]
+        ));
+
+    	$response->assertOk();
+
+    	$response->assertJsonStructure([
+    	    'data' => ['hearing', 'health', 'allergies']
+        ]);
+
+    	$responseData = $response->decodeResponseJson()['data'];
+
+    	$this->assertEquals('poor', $responseData['hearing']);
+    	$this->assertEquals('poor', $responseData['health']);
+
+    	$this->assertDatabaseHas('intake_forms', [
+    	    'patient_id' => $form->patient_id,
+            'hearing' => 'poor',
+            'health' => 'poor',
+        ]);
+    }
+
     protected function validData($overrides = [])
     {
         return array_merge([

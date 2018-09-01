@@ -39,5 +39,6 @@ Route::get('registration/{token}', 'RegistrationController@create')->name('regis
 Route::post('registration/complete', 'RegistrationController@store')->name('registration.store');
 
 Route::get('intake/{patient}/new', 'IntakeFormController@create')->name('intake.create');
+Route::post('intake/{form}/update', 'IntakeFormController@update')->name('intake.update');
 
 Auth::routes();

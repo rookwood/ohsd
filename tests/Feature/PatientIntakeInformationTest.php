@@ -164,7 +164,10 @@ class PatientIntakeInformationTest extends TestCase
             'health' => 'good',
         ]);
 
-    	$response = $this->json('POST', route('intake.update', $form),
+    	$audiologist = factory(User::class)->state('audiologist')->create();
+
+    	$response = $this->actingAs($audiologist)
+            ->json('POST', route('intake.update', $form),
             array_merge($form->toArray(), [
                 'hearing' => 'poor',
                 'health' => 'poor',

@@ -15,4 +15,9 @@ class Employer extends Model
        'contact',
        'phone'
     ];
+
+    public function employees()
+    {
+        return $this->hasMany(Patient::class);
+    }
 }

@@ -57,6 +57,67 @@ class PatientIntakeInformationTest extends TestCase
         $this->assertFalse($intake->noise_exposure_other);
     }
 
+    /** @test */
+    public function new_intake_form_starts_with_data_from_previous_encounter()
+    {
+    	$patient = factory(Patient::class)->create();
+        $intakeA = factory(IntakeForm::class)->create([
+            'patient_id' => $patient->id,
+            'date' => Carbon::now()->subYear()
+        ]);
+        $intakeB = factory(IntakeForm::class)->create([
+            'patient_id' => $patient->id,
+            'date' => Carbon::today()
+        ]);
+
+        $response = $this->get(route('intake.create', $patient));
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [
+                'patient' => ['firstname', 'lastname', 'mrn', 'birthdate', 'employer', 'hire_date', 'title'],
+                'intake'  => [
+                    'hearing',
+                    'health',
+                    'allergies',
+                    'diabetes',
+                    'dizziness',
+                    'head_injury',
+                    'hypertension',
+                    'kidney_disease',
+                    'measles',
+                    'mumps',
+                    'scarlet_fever',
+                    'otorrhea',
+                    'otalgia',
+                    'ear_surgery',
+                    'ear_medications',
+                    'tinnitus',
+                    'aural_pressure',
+                    'perforated_tympanic_membrane',
+                    'cerumen',
+                    'ent_consult',
+                    'hearing_loss',
+                    'family_history_hearing_loss',
+                    'use_amplification',
+                    'previously_work_noise_exposure',
+                    'audiology_consult',
+                    'noise_exposure_recreational_gun_use',
+                    'noise_exposure_power_tools',
+                    'noise_exposure_engines',
+                    'noise_exposure_loud_music',
+                    'noise_exposure_farm_machinery',
+                    'noise_exposure_military',
+                    'noise_exposure_other',
+                ],
+            ],
+        ]);
+
+        $responseIntakeData = $response->decodeResponseJson()['data']['intake'];
+        $this->assertEquals($intakeB->hearing, $responseIntakeData['hearing']);
+        $this->assertEquals($intakeB->health, $responseIntakeData['health']);
+        $this->assertEquals($intakeB->hearing_loss, $responseIntakeData['hearing_loss']);
+    }
+
     protected function validData($overrides = [])
     {
         return array_merge([

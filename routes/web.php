@@ -38,4 +38,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('registration/{token}', 'RegistrationController@create')->name('registration.create');
 Route::post('registration/complete', 'RegistrationController@store')->name('registration.store');
 
+Route::get('intake/{patient}/new', 'IntakeFormController@create')->name('intake.create');
+
 Auth::routes();

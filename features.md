@@ -10,9 +10,9 @@
   - [x] Evaluation comments
 
 #### Demographics
-- [ ] Patient information
+- [x] Patient information
   - [x] Intake medical questionaire
-    - [ ] On registration, use previous intake as baseline for changes
+    - [x] On registration, use previous intake as baseline for changes
   - [x] Basic demographics
 
 #### Staff information

@@ -26,6 +26,8 @@ class Patient extends Model
         'hire_date',
     ];
 
+    protected $with = ['audiograms', 'employer', 'intakeForms'];
+
     public static function createWithEmployer($patientData, $employerData)
     {
         $employer = Employer::create($employerData);
@@ -48,6 +50,11 @@ class Patient extends Model
     public function intakeForms()
     {
         return $this->hasMany(IntakeForm::class);
+    }
+
+    public function employer()
+    {
+        return $this->belongsTo(Employer::class);
     }
 
     public function setBirthdateAttribute($value)

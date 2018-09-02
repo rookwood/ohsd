@@ -35,9 +35,19 @@ $factory->afterCreatingState(User::class, 'audiologist', function ($user) {
     $user->addRole('audiologist');
 });
 
+$factory->afterMakingState(User::class, 'audiologist', function ($user) {
+    $role = factory(Role::class)->make(['name' => 'audiologist']);
+    $user->setRelation('roles', collect([$role]));
+});
+
 $factory->state(User::class, 'admin', []);
 
 $factory->afterCreatingState(User::class, 'admin', function ($user) {
     factory(Role::class)->create(['name' => 'admin']);
     $user->addRole('admin');
+});
+
+$factory->afterMakingState(User::class, 'admin', function ($user) {
+    $role = factory(Role::class)->make(['name' => 'admin']);
+    $user->setRelation('roles', collect([$role]));
 });

@@ -7,6 +7,7 @@ use App\Patient;
 use App\Response;
 use App\Audiogram;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,7 +19,9 @@ class AudiogramTest extends TestCase
     /** @test */
     public function create_a_new_audiogram_with_responses()
     {
-        $patient = factory(Patient::class)->create();
+        Event::fake();
+
+        $patient = factory(Patient::class)->make(['id' => 1]);
         $responses = factory(Response::class, 3)->make();
         $testData = factory(Audiogram::class)->make(['patient_id' => $patient->id]);
 

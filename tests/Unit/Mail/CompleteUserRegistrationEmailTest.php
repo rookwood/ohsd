@@ -10,8 +10,6 @@ use Tests\TestCase;
 
 class CompleteUserRegistrationEmailTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function email_contains_a_link_to_complete_registration()
     {

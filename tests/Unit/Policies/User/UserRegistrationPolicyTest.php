@@ -9,13 +9,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserRegistrationPolicyTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function only_admins_may_register_users()
     {
-    	$admin = factory(User::class)->state('admin')->create();
-    	$audiologist = factory(User::class)->state('audiologist')->create();
+    	$admin = factory(User::class)->state('admin')->make();
+    	$audiologist = factory(User::class)->state('audiologist')->make();
 
     	$policy = new UserRegistrationPolicy;
 

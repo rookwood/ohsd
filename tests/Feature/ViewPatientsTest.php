@@ -62,7 +62,7 @@ class ViewPatientsTest extends TestCase
     }
 
     /** @test */
-    public function non_existant_patients_also_cause_redirect_if_not_authenticated()
+    public function non_existent_patients_also_cause_401_if_not_authenticated()
     {
         $this->withExceptionHandling();
 

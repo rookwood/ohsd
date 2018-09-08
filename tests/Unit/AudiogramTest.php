@@ -54,7 +54,10 @@ class AudiogramTest extends TestCase
     {
         $audiogramA = factory(Audiogram::class)
             ->state('normal')
-            ->create(['patient_id' => 1]);
+            ->create([
+                'patient_id' => 1,
+                'created_at' => Carbon::today()->subYear()
+            ]);
 
         $audiogramB = factory(Audiogram::class)
             ->state('normal')
@@ -73,7 +76,10 @@ class AudiogramTest extends TestCase
         $patient = factory(Patient::class)->create();
         $audiogramA = factory(Audiogram::class)
             ->state('normal')
-            ->create(['patient_id' => $patient->id]);
+            ->create([
+                'patient_id' => $patient->id,
+                'created_at' => Carbon::today()->subYears(2)
+            ]);
 
         $audiogramB = factory(Audiogram::class)
             ->state('moderate-loss')

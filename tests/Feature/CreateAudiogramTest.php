@@ -81,11 +81,11 @@ class CreateAudiogramTest extends TestCase
     public function audiograms_cannot_be_created_by_unauthenticated_users()
     {
     	$this->withExceptionHandling();
+    	factory(Patient::class)->create();
 
-        $response = $this->post(route('audiograms.store', 1), $this->validData());
+        $response = $this->json('POST', route('audiograms.store', 1), $this->validData());
 
-        $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $response->assertStatus(401);
     }
 
     /** @test */

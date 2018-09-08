@@ -78,7 +78,7 @@ class CompleteRegistrationTest extends TestCase
 
         $user = factory(User::class)->state('audiologist')->create([
             'registration_token' => $this->validData()['token'],
-            'password' => 'correct horse battery staple'
+            'password' => Hash::make('correct horse battery staple')
         ]);
 
         $response = $this->json('POST', route('registration.store'), $data);

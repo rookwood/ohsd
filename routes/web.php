@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('intake/{patient}/new', 'IntakeFormController@create')->name('intake.create');
     Route::post('intake/{form}/update', 'IntakeFormController@update')->name('intake.update');
 });
+Route::get('encounters/today', 'EncountersForTodayController@index')->name('encounters.today.index');
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
 

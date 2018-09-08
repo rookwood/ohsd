@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Encounter;
+use App\Encounters\Encounter;
 use App\Http\Resources\EncounterCollection;
 use Illuminate\Http\Request;
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da7f642bd70a038f9b5c8964d4231f7c",
+    "content-hash": "f609b074480357188e7f8581b1349e91",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -904,6 +904,83 @@
                 "storage"
             ],
             "time": "2018-08-22T07:45:22+00:00"
+        },
+        {
+            "name": "makeabledk/laravel-eloquent-status",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/makeabledk/laravel-eloquent-status.git",
+                "reference": "1a3307b420a1e93025280f8c59eceefa4569cfe1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/makeabledk/laravel-eloquent-status/zipball/1a3307b420a1e93025280f8c59eceefa4569cfe1",
+                "reference": "1a3307b420a1e93025280f8c59eceefa4569cfe1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.4",
+                "makeabledk/laravel-querykit": "^1.2",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.3",
+                "laravel/laravel": "5.5",
+                "orchestra/testbench": "~3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Makeable\\EloquentStatus\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-SA-4.0"
+            ],
+            "time": "2018-07-03T07:11:56+00:00"
+        },
+        {
+            "name": "makeabledk/laravel-querykit",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/makeabledk/laravel-query-kit.git",
+                "reference": "859e9033d4d69313c4ba43df46b09eb10460319b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/makeabledk/laravel-query-kit/zipball/859e9033d4d69313c4ba43df46b09eb10460319b",
+                "reference": "859e9033d4d69313c4ba43df46b09eb10460319b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.4",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.3",
+                "orchestra/testbench": "~3.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Makeable\\QueryKit\\QueryKitServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Makeable\\QueryKit\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-SA-4.0"
+            ],
+            "time": "2018-07-02T02:06:29+00:00"
         },
         {
             "name": "monolog/monolog",

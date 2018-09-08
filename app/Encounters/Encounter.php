@@ -1,11 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Encounters;
 
+use App\Patient;
 use Illuminate\Database\Eloquent\Model;
+use Makeable\EloquentStatus\HasStatus;
 
 class Encounter extends Model
 {
+    use HasStatus;
+
     protected $dates = [
         'created_at',
         'updated_at',

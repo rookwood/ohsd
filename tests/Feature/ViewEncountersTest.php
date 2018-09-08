@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Encounter;
+use App\Encounters\Encounter;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -34,8 +34,7 @@ class ViewEncountersTest extends TestCase
         $this->assertEquals($encounters->first()->start_at, $responseEncounters[0]['start_at']);
         $this->assertEquals($encounters->first()->patient_id, $responseEncounters[0]['patient']['id']);
         $this->assertEquals($encounters->first()->notes, $responseEncounters[0]['notes']);
-        // Requires more implementation work
-        // $this->assertEquals('scheduled', $responseEncounters[0]->status);
+        $this->assertEquals('scheduled', $responseEncounters[0]['status']);
     }
 
     /** @test */

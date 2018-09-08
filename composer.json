@@ -14,7 +14,8 @@
         "laravel-validation-rules/phone": "^1.0",
         "laravel-validation-rules/us-state": "^1.0",
         "laravel/framework": "5.7.*",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "makeabledk/laravel-eloquent-status": "^0.4.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

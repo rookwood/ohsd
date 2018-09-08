@@ -3,7 +3,7 @@
 use App\Patient;
 use App\Users\User;
 use Faker\Generator as Faker;
-use App\Encounter;
+use App\Encounters\Encounter;
 use Illuminate\Support\Carbon;
 
 $factory->define(Encounter::class, function (Faker $faker) {

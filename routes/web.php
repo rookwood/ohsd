@@ -33,6 +33,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('encounters/upcoming/week', 'EncountersForUpcomingWeekController@index')->name('encounters.week.index');
 });
 
+Route::post('encounters/new/{patient}', 'EncountersController@store')->name('encounters.store');
+
 Route::get('users/register', 'UsersController@create')->name('users.create');
 
 Route::get('registration/{token}', 'RegistrationController@create')->name('registration.create');

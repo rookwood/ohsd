@@ -22,6 +22,22 @@ class Encounter extends Model
         'rescheduled_to',
     ];
 
+    protected $fillable = [
+        'start_at',
+        'patient_id',
+        'notes'
+    ];
+
+    public static function schedule(Patient $patient, array $details)
+    {
+        $startTime = Carbon::fromScheduleRequest($details['date'], $details['time']);
+
+        return static::create(array_merge($details, [
+            'patient_id' => $patient->id,
+            'start_at' => $startTime
+        ]));
+    }
+
     public function today()
     {
         return $this->forTimeSpan(

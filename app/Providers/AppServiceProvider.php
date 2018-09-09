@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Audiogram;
+use App\Encounters\Encounter;
 use App\Observers\AudiogramObserver;
+use App\Observers\EncounterObserver;
 use App\Observers\UserObserver;
 use App\Users\User;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         Audiogram::observe(AudiogramObserver::class);
+        Encounter::observe(EncounterObserver::class);
     }
 
     /**

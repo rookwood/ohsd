@@ -11,7 +11,7 @@ class EncountersForTodayController extends Controller
     public function index()
     {
         return response()->json([
-            'data' => new EncounterCollection(Encounter::all())
+            'data' => new EncounterCollection(Encounter::today())
         ]);
     }
 }

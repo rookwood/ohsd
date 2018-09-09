@@ -23,8 +23,12 @@ $factory->define(Encounter::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Encounter::class, 'today',function (Faker $faker) {
+$factory->state(Encounter::class, 'today', function (Faker $faker) {
     return [
         'start_at' => $faker->dateTimeBetween(Carbon::today()->startOfDay(), Carbon::today()->endOfDay())
     ];
 });
+
+$factory->state(Encounter::class, 'old', [
+    'start_at' => Carbon::now()->subWeek()
+]);

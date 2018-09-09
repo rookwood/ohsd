@@ -14,6 +14,7 @@ class ViewEncountersTest extends TestCase
     public function view_todays_appointments()
     {
     	$encounters = factory(Encounter::class, 3)->state('today')->create();
+    	$oldEncounters = factory(Encounter::class, 1)->state('old')->create();
 
     	$response = $this->json('GET', route('encounters.today.index'));
 

@@ -4,6 +4,7 @@ namespace App\Encounters;
 
 use App\Patient;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Makeable\EloquentStatus\HasStatus;
 
 class Encounter extends Model
@@ -20,6 +21,14 @@ class Encounter extends Model
         'departed_at',
         'rescheduled_to',
     ];
+
+    public static function today()
+    {
+        return static::whereBetween('start_at', [
+            Carbon::today()->startOfDay()->toDateTimeString(),
+            Carbon::today()->endOfDay()->toDateTimeString()
+        ])->get();
+    }
 
     public function patient()
     {

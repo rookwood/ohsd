@@ -18,13 +18,13 @@ class AgeRelatedThresholdAdjustmentTest extends TestCase
 
         // Age 40 male
         $male = new Patient([
-    	    'gender' => 'male',
+            'gender' => 'male',
             'birthdate' => Carbon::now()->subYears(40)->subDays(7),
         ]);
 
     	// Age 48 female
         $female = new Patient([
-    	    'gender' => 'female',
+            'gender' => 'female',
             'birthdate' => Carbon::now()->subYears(48)->subDays(7),
         ]);
 

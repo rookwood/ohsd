@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('intake/{form}/update', 'IntakeFormController@update')->name('intake.update');
 });
 Route::get('encounters/today', 'EncountersForTodayController@index')->name('encounters.today.index');
+Route::get('encounters/upcoming/week', 'EncountersForUpcomingWeekController@index')->name('encounters.week.index');
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
 

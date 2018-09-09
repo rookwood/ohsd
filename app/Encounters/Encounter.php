@@ -30,6 +30,14 @@ class Encounter extends Model
         ])->get();
     }
 
+    public static function nextSevenDays()
+    {
+        return static::whereBetween('start_at', [
+            Carbon::today()->startOfDay()->toDateTimeString(),
+            Carbon::today()->addDays(7)->endOfDay()->toDateTimeString()
+        ])->get();
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);

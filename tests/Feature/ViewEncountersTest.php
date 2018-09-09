@@ -39,8 +39,26 @@ class ViewEncountersTest extends TestCase
     }
 
     /** @test */
-    // public function view_this_weeks_appointments()
-    // {
-    // 	//
-    // }
+    public function view_this_weeks_appointments()
+    {
+        $todayEncounters    = factory(Encounter::class, 2)->state('today')->create();
+        $tomorrowEncounters = factory(Encounter::class, 2)->state('tomorrow')->create();
+        $oldEncounters = factory(Encounter::class, 1)->state('old')->create();
+
+        $response = $this->json('GET', route('encounters.week.index'));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'start_at',
+                    'patient',
+                    'status',
+                    'notes',
+                ]
+            ]
+        ]);
+
+        $this->assertCount(4, $response->decodeResponseJson()['data']);
+    }
 }

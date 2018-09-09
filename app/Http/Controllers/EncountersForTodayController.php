@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class EncountersForTodayController extends Controller
 {
-    public function index()
+    public function index(Encounter $encounter)
     {
         return response()->json([
-            'data' => new EncounterCollection(Encounter::today())
+            'data' => new EncounterCollection($encounter->today())
         ]);
     }
 }

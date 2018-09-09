@@ -7,10 +7,10 @@ use App\Http\Resources\EncounterCollection;
 
 class EncountersForUpcomingWeekController extends Controller
 {
-    public function index()
+    public function index(Encounter $encounter)
     {
         return response()->json([
-            'data' => new EncounterCollection(Encounter::nextSevenDays())
+            'data' => new EncounterCollection($encounter->nextSevenDays())
         ]);
     }
 }

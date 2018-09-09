@@ -22,25 +22,25 @@ class Encounter extends Model
         'rescheduled_to',
     ];
 
-    public static function today()
+    public function today()
     {
-        return static::forTimeSpan(
+        return $this->forTimeSpan(
             Carbon::today()->startOfDay()->toDateTimeString(),
             Carbon::today()->endOfDay()->toDateTimeString()
         );
     }
 
-    public static function nextSevenDays()
+    public function nextSevenDays()
     {
-        return static::forTimeSpan(
+        return $this->forTimeSpan(
             Carbon::today()->startOfDay()->toDateTimeString(),
             Carbon::today()->addDays(7)->endOfDay()->toDateTimeString()
         );
     }
 
-    public static function forTimeSpan($start, $end)
+    public function forTimeSpan($start, $end)
     {
-        return static::whereBetween('start_at', [$start, $end]);
+        return $this->whereBetween('start_at', [$start, $end])->get();
     }
 
     public function patient()

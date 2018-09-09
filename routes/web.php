@@ -28,9 +28,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('intake/{patient}', 'IntakeFormController@store')->name('intake.store');
     Route::get('intake/{patient}/new', 'IntakeFormController@create')->name('intake.create');
     Route::post('intake/{form}/update', 'IntakeFormController@update')->name('intake.update');
+
+    Route::get('encounters/today', 'EncountersForTodayController@index')->name('encounters.today.index');
+    Route::get('encounters/upcoming/week', 'EncountersForUpcomingWeekController@index')->name('encounters.week.index');
 });
-Route::get('encounters/today', 'EncountersForTodayController@index')->name('encounters.today.index');
-Route::get('encounters/upcoming/week', 'EncountersForUpcomingWeekController@index')->name('encounters.week.index');
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
 

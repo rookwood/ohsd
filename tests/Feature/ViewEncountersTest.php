@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Encounters\Encounter;
+use App\Users\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -16,7 +17,8 @@ class ViewEncountersTest extends TestCase
     	$encounters = factory(Encounter::class, 3)->state('today')->create();
     	$oldEncounters = factory(Encounter::class, 1)->state('old')->create();
 
-    	$response = $this->json('GET', route('encounters.today.index'));
+    	$response = $this->actingAs(new User)
+            ->json('GET', route('encounters.today.index'));
 
     	$response->assertOk();
         $response->assertJsonStructure([
@@ -39,13 +41,23 @@ class ViewEncountersTest extends TestCase
     }
 
     /** @test */
+    public function unauthenticated_users_cannot_view_todays_appointments()
+    {
+    	$this->withExceptionHandling();
+
+        $response = $this->json('GET', route('encounters.week.index'));
+        $response->assertStatus(401);
+    }
+
+    /** @test */
     public function view_this_weeks_appointments()
     {
         $todayEncounters    = factory(Encounter::class, 2)->state('today')->create();
         $tomorrowEncounters = factory(Encounter::class, 2)->state('tomorrow')->create();
         $oldEncounters = factory(Encounter::class, 1)->state('old')->create();
 
-        $response = $this->json('GET', route('encounters.week.index'));
+        $response = $this->actingAs(new User)
+            ->json('GET', route('encounters.week.index'));
 
         $response->assertOk();
         $response->assertJsonStructure([
@@ -61,4 +73,14 @@ class ViewEncountersTest extends TestCase
 
         $this->assertCount(4, $response->decodeResponseJson()['data']);
     }
+
+    /** @test */
+    public function unauthenticated_users_cannot_view_this_weeks_appointments()
+    {
+        $this->withExceptionHandling();
+
+        $response = $this->json('GET', route('encounters.week.index'));
+        $response->assertStatus(401);
+    }
+
 }

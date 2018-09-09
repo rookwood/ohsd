@@ -9,6 +9,8 @@ class EncounterObserver
 {
     public function creating(Encounter $encounter)
     {
-        $encounter->scheduled_by = Auth::user()->id;
+        if (is_null($encounter->scheduled_by)) {
+            $encounter->scheduled_by = Auth::user()->id;
+        }
     }
 }

@@ -19,9 +19,9 @@ class StandardThresholdShiftDeterminationTest extends TestCase
         $baselineAudiogram = factory(Audiogram::class)->state('normal')->create();
         $currentAudiogram = factory(Audiogram::class)->state('moderate-loss')->create();
 
-    	$stsd = new StandardThresholdShiftDetermination;
+        $stsd = new StandardThresholdShiftDetermination;
 
-    	$this->assertTrue($stsd->test($baselineAudiogram, $currentAudiogram));
+        $this->assertTrue($stsd->test($baselineAudiogram, $currentAudiogram));
     }
 
     /** @test */

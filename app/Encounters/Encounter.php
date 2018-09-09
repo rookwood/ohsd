@@ -24,18 +24,23 @@ class Encounter extends Model
 
     public static function today()
     {
-        return static::whereBetween('start_at', [
+        return static::forTimeSpan(
             Carbon::today()->startOfDay()->toDateTimeString(),
             Carbon::today()->endOfDay()->toDateTimeString()
-        ])->get();
+        );
     }
 
     public static function nextSevenDays()
     {
-        return static::whereBetween('start_at', [
+        return static::forTimeSpan(
             Carbon::today()->startOfDay()->toDateTimeString(),
             Carbon::today()->addDays(7)->endOfDay()->toDateTimeString()
-        ])->get();
+        );
+    }
+
+    public static function forTimeSpan($start, $end)
+    {
+        return static::whereBetween('start_at', [$start, $end]);
     }
 
     public function patient()

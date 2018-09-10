@@ -31,9 +31,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('encounters/today', 'EncountersForTodayController@index')->name('encounters.today.index');
     Route::get('encounters/upcoming/week', 'EncountersForUpcomingWeekController@index')->name('encounters.week.index');
+    Route::post('encounters/new/{patient}', 'EncountersController@store')->name('encounters.store');
 });
 
-Route::post('encounters/new/{patient}', 'EncountersController@store')->name('encounters.store');
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
 

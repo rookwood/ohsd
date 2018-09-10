@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Encounters\Encounter;
 use App\Patient;
+use App\Users\User;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Auth;
@@ -17,15 +18,15 @@ class CreateEncounterTest extends TestCase
     /** @test */
     public function schedule_future_encounter_for_patient()
     {
-    	Auth::shouldReceive('user')->andReturn((object) ['id' => 1]);
+    	$patient = factory(Patient::class)->create();
+    	$user = factory(User::class)->create();
 
-        $patient = factory(Patient::class)->create();
-
-        $response = $this->json('POST', route('encounters.store', $patient), [
-            'date' => '2018-09-09',
-            'time' => '10:00 am',
-            'notes' => 'Test encounter note',
-        ]);
+        $response = $this->actingAs($user)
+            ->json('POST', route('encounters.store', $patient), [
+                'date' => '2018-09-09',
+                'time' => '10:00 am',
+                'notes' => 'Test encounter note',
+            ]);
 
     	$response->assertStatus(201);
 
@@ -39,6 +40,18 @@ class CreateEncounterTest extends TestCase
         ]);
 
     	$this->assertCount(1, Encounter::all());
+    }
+
+    /** @test */
+    public function unauthenticated_users_may_not_schedule_patient_encounters()
+    {
+    	$this->withExceptionHandling();
+
+    	$response = $this->json('POST', route('encounters.store', 1), $this->validData());
+
+    	$response->assertStatus(401);
+
+    	$this->assertEmpty(Encounter::all());
     }
 
     /** @test */
@@ -82,8 +95,9 @@ class CreateEncounterTest extends TestCase
         $this->withExceptionHandling();
 
         $patient = factory(Patient::class)->create();
+        $user = factory(User::class)->create();
 
-        $response = $this->json('POST', route('encounters.store', $patient), $data);
+        $response = $this->actingAs($user)->json('POST', route('encounters.store', $patient), $data);
 
         $response->assertValidationError($field);
 

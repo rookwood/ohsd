@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Encounters\Encounter;
+use App\Http\Requests\CreateEncounterRequest;
 use App\Http\Resources\EncounterResource;
 use App\Patient;
-use Illuminate\Http\Request;
 
 class EncountersController extends Controller
 {
-    public function store(Request $request, Patient $patient)
+    public function store(CreateEncounterRequest $request, Patient $patient)
     {
         $encounter = Encounter::schedule($patient, $request->only('date', 'time', 'notes'));
 

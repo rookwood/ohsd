@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Exceptions\PolicyException;
 use App\Policies\Fake\FakeFailing;
 use App\Policies\Fake\FakePassing;
 use App\Policies\PolicyMap;
@@ -43,5 +44,16 @@ class AuthorizeByPolicyTest extends TestCase
     public function policies_are_located_via_action_name()
     {
         $this->assertEquals(FakePassing::class, (new PolicyMap)->get('fake_action'));
+    }
+
+    /** @test */
+    public function invalid_policy_causes_an_exception_to_be_thrown()
+    {
+    	$user = factory(User::class)->make();
+
+        $this->expectException(PolicyException::class);
+
+        $user->can('do_some_fake_action');
+
     }
 }

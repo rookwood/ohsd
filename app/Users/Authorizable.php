@@ -62,7 +62,7 @@ trait Authorizable
             $role = Role::where('name', $role)->firstOrFail();
         }
 
-        return $this->roles()->dettach($role);
+        return $this->roles()->detach($role);
     }
 
     /**

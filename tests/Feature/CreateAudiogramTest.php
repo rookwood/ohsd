@@ -60,7 +60,7 @@ class CreateAudiogramTest extends TestCase
 
         $this->assertEquals($user->id, $audiogram->user_id);
         $this->assertEquals($patient->id, $audiogram->patient_id);
-        $this->assertTrue($audiogram->passedOtoscopicEvaluation());
+        $this->assertFalse($audiogram->passedOtoscopicEvaluation());
         $this->assertTrue($audiogram->avoidedNoiseExposurePriorToEvaluation());
         $this->assertTrue($audiogram->woreHearingProtectionSinceLastEvaluation());
         $this->assertEquals('test comment', $audiogram->comment);
@@ -273,7 +273,7 @@ class CreateAudiogramTest extends TestCase
         return array_merge([
             'noise_exposure'     => 'no',
             'hearing_protection' => 'yes',
-            'otoscopy'           => 'pass',
+            'otoscopy'           => 'fail',
             'comment'            => 'test comment',
             'date'               => '2018-07-01',
             'responses'          => [

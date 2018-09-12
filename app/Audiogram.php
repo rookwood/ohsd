@@ -94,14 +94,14 @@ class Audiogram extends Model
         return $this->hasMany(Response::class);
     }
 
-    public function setOtoscopyAttribue($value)
+    public function setOtoscopyAttribute($value)
     {
         $this->attributes['otoscopy'] = $value == 'pass' ? true : false;
     }
 
     public function setNoiseExposureAttribute($value)
     {
-        $this->attributes['noise_exposure'] = $value == 'no' ? true : false;
+        $this->attributes['noise_exposure'] = ($value == 'no') ? true : false;
     }
 
     public function setHearingProtectionAttribute($value)

@@ -120,4 +120,17 @@ class AudiogramTest extends TestCase
         $this->assertTrue($followUpTest->getBaseline()->is($firstLossDetected));
         $this->assertTrue($firstLossDetected->getBaseline()->is($original));
     }
+
+    /** @test */
+    public function audiogram_has_mutators_for_test_related_booleans()
+    {
+    	$audiogram = new Audiogram;
+    	$audiogram->otoscopy = 'fail';
+    	$audiogram->noise_exposure = 'yes';
+    	$audiogram->hearing_protection = 'no';
+
+    	$this->assertFalse($audiogram->passedOtoscopicEvaluation());
+    	$this->assertFalse($audiogram->avoidedNoiseExposurePriorToEvaluation());
+    	$this->assertFalse($audiogram->woreHearingProtectionSinceLastEvaluation());
+    }
 }

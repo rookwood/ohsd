@@ -21,14 +21,14 @@ class ViewAudiogramsTest extends TestCase
             'patient_id' => $patient->id,
             'user_id'    => $audiologist->id
         ]);
+        $notThatPatientsAudiogram = factory(Audiogram::class)->create();
 
         $response = $this->actingAs($audiologist)
             ->json('GET', route('patients.show', $patient));
 
         $response->assertSuccessful();
 
-        $this->assertCount(3, $response->data('audiograms'));
-        $audiograms->assertEquals($response->data('audiograms'));
+        $this->assertCount(3, $response->decodeResponseJson('data.audiograms'));
     }
 
     /** @test */

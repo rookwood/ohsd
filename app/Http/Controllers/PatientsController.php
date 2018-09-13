@@ -16,9 +16,7 @@ class PatientsController extends Controller
 
     public function show(Patient $patient)
     {
-        return view('patients.show', [
-            'audiograms' => $patient->audiograms
-        ]);
+        return response()->json(['data' => new PatientResource($patient)]);
     }
 
     public function store(CreatePatientRequest $request)

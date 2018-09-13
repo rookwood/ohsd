@@ -47,13 +47,37 @@ class AuthorizeByPolicyTest extends TestCase
     }
 
     /** @test */
-    public function invalid_policy_causes_an_exception_to_be_thrown()
+    public function invalid_action_causes_an_exception_to_be_thrown()
     {
     	$user = factory(User::class)->make();
 
         $this->expectException(PolicyException::class);
 
         $user->can('do_some_fake_action');
+    }
 
+    /** @test */
+    public function missing_policy_class_causes_an_exception_to_be_thrown()
+    {
+        app()->bind('policy', function () {
+            return new class
+            {
+                public function get($policy)
+                {
+                    return \App\Policies\ThisClassDoesNotExist::class;
+                }
+
+                public function __invoke($action)
+                {
+                    return $this->get($action);
+                }
+            };
+        });
+
+        $user = factory(User::class)->make();
+
+        $this->expectException(PolicyException::class);
+
+        $user->can('do_some_fake_action');
     }
 }

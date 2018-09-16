@@ -82,5 +82,4 @@ class ViewEncountersTest extends TestCase
         $response = $this->json('GET', route('encounters.week.index'));
         $response->assertStatus(401);
     }
-
 }

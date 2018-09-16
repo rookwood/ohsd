@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CompleteRegistrationTest extends TestCase
+class CompleteProviderRegistrationTest extends TestCase
 {
     use RefreshDatabase;
 

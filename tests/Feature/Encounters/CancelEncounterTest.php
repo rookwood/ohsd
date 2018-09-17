@@ -50,4 +50,17 @@ class CancelEncounterTest extends TestCase
     	$response->assertValidationError('status');
     	$this->assertEquals('Encounter already marked as rescheduled', $response->decodeResponseJson('errors.status.0'));
     }
+
+    /** @test */
+    public function encounters_cannot_be_cancelled_once_departed()
+    {
+        $this->withExceptionHandling();
+
+        $encounter = factory(Encounter::class)->state('departed')->create();
+
+        $response = $this->json('POST', route('encounters.cancel.store', $encounter), []);
+
+        $response->assertValidationError('status');
+        $this->assertEquals('Encounter already marked as departed', $response->decodeResponseJson('errors.status.0'));
+    }
 }

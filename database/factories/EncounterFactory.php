@@ -50,3 +50,9 @@ $factory->state(Encounter::class, 'cancelled', [
 $factory->state(Encounter::class, 'rescheduled', [
     'rescheduled_to' => Carbon::now(),
 ]);
+
+$factory->state(Encounter::class, 'departed', [
+    'start_at' => Carbon::now()->subMinutes(20),
+    'arrived_at' => Carbon::now()->subMinute(18),
+    'departed_at' => Carbon::now()
+]);

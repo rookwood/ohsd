@@ -20,4 +20,17 @@ class ArriveEncounterTest extends TestCase
 
     	$this->assertTrue($encounter->fresh()->checkStatus('arrived'));
     }
+
+    /** @test */
+    public function encounters_cannot_be_arrived_if_already_marked_as_arrived()
+    {
+        $this->withExceptionHandling();
+
+        $encounter = factory(Encounter::class)->state('arrived')->create();
+
+        $response = $this->json('POST', route('encounters.arrival.store', $encounter), []);
+
+        $response->assertValidationError('status');
+        $this->assertEquals('Encounter already marked as arrived', $response->decodeResponseJson('errors.status.0'));
+    }
 }

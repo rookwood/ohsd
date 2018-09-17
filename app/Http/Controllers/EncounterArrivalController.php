@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Encounters\Encounter;
-use Illuminate\Http\Request;
+use App\Http\Requests\EncounterArrivalRequest;
 
 class EncounterArrivalController extends Controller
 {
-    public function store(Encounter $encounter)
+    public function store(EncounterArrivalRequest $request, Encounter $encounter)
     {
         $encounter->arrive();
+
+        return response()->json(['data' => ['message' => 'Encounter arrived']]);
     }
 }

@@ -38,3 +38,7 @@ $factory->state(Encounter::class, 'tomorrow', function (Faker $faker) {
 $factory->state(Encounter::class, 'old', [
     'start_at' => Carbon::now()->subWeek()
 ]);
+
+$factory->state(Encounter::class, 'arrived', [
+    'arrived_at' => Carbon::now(),
+]);

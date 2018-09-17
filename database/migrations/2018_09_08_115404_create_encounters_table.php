@@ -22,6 +22,7 @@ class CreateEncountersTable extends Migration
             $table->dateTime('arrived_at')->nullable();
             $table->dateTime('departed_at')->nullable();
             $table->dateTime('cancelled_at')->nullable();
+            $table->string('cancellation_reason')->nullable();
             $table->dateTime('rescheduled_to')->nullable();
             $table->unsignedInteger('scheduled_by');
             $table->timestamps();

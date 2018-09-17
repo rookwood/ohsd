@@ -27,6 +27,8 @@ class Encounter extends Model
         'patient_id',
         'notes',
         'arrived_at',
+        'cancelled_at',
+        'cancellation_reason',
     ];
 
     public static function schedule(Patient $patient, array $details)
@@ -42,6 +44,14 @@ class Encounter extends Model
     public function arrive()
     {
         return tap($this)->update(['arrived_at' => Carbon::now()]);
+    }
+
+    public function cancel($reason = null)
+    {
+        return tap($this)->update([
+            'cancelled_at' => Carbon::now(),
+            'cancellation_reason' => $reason
+        ]);
     }
 
     public function today()

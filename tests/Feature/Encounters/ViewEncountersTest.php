@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Encounters;
 
 use App\Encounters\Encounter;
 use App\Users\User;

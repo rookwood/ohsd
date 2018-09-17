@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Audiograms;
 
 use App\Events\TestResultWasLogged;
 use App\Users\User;

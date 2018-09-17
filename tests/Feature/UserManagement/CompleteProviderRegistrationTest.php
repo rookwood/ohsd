@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\UserManagement;
 
 use App\Users\User;
 use Illuminate\Support\Facades\Hash;

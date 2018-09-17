@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\UserManagement;
 
 use App\Exceptions\PolicyException;
 use App\Policies\Fake\FakeFailing;
 use App\Policies\Fake\FakePassing;
 use App\Policies\PolicyMap;
 use App\Users\User;
-use Tests\TestCase;
+use use Tests\TestCase;
 
 class AuthorizeByPolicyTest extends TestCase
 {

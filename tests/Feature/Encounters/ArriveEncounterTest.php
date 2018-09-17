@@ -33,4 +33,30 @@ class ArriveEncounterTest extends TestCase
         $response->assertValidationError('status');
         $this->assertEquals('Encounter already marked as arrived', $response->decodeResponseJson('errors.status.0'));
     }
+
+    /** @test */
+    public function encounters_cannot_be_arrived_if_cancelled()
+    {
+        $this->withExceptionHandling();
+
+        $encounter = factory(Encounter::class)->state('cancelled')->create();
+
+        $response = $this->json('POST', route('encounters.arrival.store', $encounter), []);
+
+        $response->assertValidationError('status');
+        $this->assertEquals('Encounter already marked as cancelled', $response->decodeResponseJson('errors.status.0'));
+    }
+
+    /** @test */
+    public function encounters_cannot_be_arrived_if_rescheduled()
+    {
+        $this->withExceptionHandling();
+
+        $encounter = factory(Encounter::class)->state('rescheduled')->create();
+
+        $response = $this->json('POST', route('encounters.arrival.store', $encounter), []);
+
+        $response->assertValidationError('status');
+        $this->assertEquals('Encounter already marked as rescheduled', $response->decodeResponseJson('errors.status.0'));
+    }
 }

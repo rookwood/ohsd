@@ -40,7 +40,7 @@ class EncounterArrivalRequest extends FormRequest
     public function messages()
     {
         return [
-            'status.in' => 'Encounter already marked as arrived'
+            'status.in' => 'Encounter already marked as ' . EncounterStatus::guess($this->encounter)
         ];
     }
 }

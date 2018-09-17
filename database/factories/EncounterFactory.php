@@ -42,3 +42,11 @@ $factory->state(Encounter::class, 'old', [
 $factory->state(Encounter::class, 'arrived', [
     'arrived_at' => Carbon::now(),
 ]);
+
+$factory->state(Encounter::class, 'cancelled', [
+    'cancelled_at' => Carbon::now(),
+]);
+
+$factory->state(Encounter::class, 'rescheduled', [
+    'rescheduled_to' => Carbon::now(),
+]);

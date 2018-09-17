@@ -7,7 +7,7 @@ use App\Policies\Fake\FakeFailing;
 use App\Policies\Fake\FakePassing;
 use App\Policies\PolicyMap;
 use App\Users\User;
-use use Tests\TestCase;
+use Tests\TestCase;
 
 class AuthorizeByPolicyTest extends TestCase
 {

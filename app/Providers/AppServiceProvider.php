@@ -4,12 +4,14 @@ namespace App\Providers;
 
 use App\Audiogram;
 use App\Encounters\Encounter;
+use App\Encounters\EncounterStatus;
 use App\Observers\AudiogramObserver;
 use App\Observers\EncounterObserver;
 use App\Observers\UserObserver;
 use App\Users\User;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Makeable\EloquentStatus\StatusManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Audiogram::observe(AudiogramObserver::class);
         Encounter::observe(EncounterObserver::class);
+
+        StatusManager::bind(Encounter::class, EncounterStatus::class);
     }
 
     /**

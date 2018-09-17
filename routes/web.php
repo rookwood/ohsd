@@ -34,6 +34,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('encounters/new/{patient}', 'EncountersController@store')->name('encounters.store');
 });
 
+Route::post('arrive/{encounter}', 'EncounterArrivalController@store')->name('encounters.arrival.store');
+
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
 

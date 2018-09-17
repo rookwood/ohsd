@@ -25,7 +25,8 @@ class Encounter extends Model
     protected $fillable = [
         'start_at',
         'patient_id',
-        'notes'
+        'notes',
+        'arrived_at',
     ];
 
     public static function schedule(Patient $patient, array $details)
@@ -36,6 +37,11 @@ class Encounter extends Model
             'patient_id' => $patient->id,
             'start_at' => $startTime
         ]));
+    }
+
+    public function arrive()
+    {
+        return tap($this)->update(['arrived_at' => Carbon::now()]);
     }
 
     public function today()

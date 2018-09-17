@@ -43,7 +43,6 @@ class EncounterStatus extends Status
     public function rescheduled($query)
     {
         return $query->whereNull('cancelled_at')
-            ->whereNull('arrived_at')
             ->whereNotNull('scheduled_at')
             ->whereNotNull('rescheduled_to');
     }

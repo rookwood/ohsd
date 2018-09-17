@@ -130,7 +130,7 @@ class EncounterStatusTest extends TestCase
         $rescheduledEncounter = factory(Encounter::class)->create([
             'start_at'       => $this->faker->dateTime,
             'arrived_at'     => $this->faker->dateTime,
-            'cancelled_at'   => $this->faker->dateTime,
+            'cancelled_at'   => null,
             'rescheduled_to' => $this->faker->dateTime,
         ]);
 

@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::post('arrive/{encounter}', 'EncounterArrivalController@store')->name('encounters.arrival.store');
 Route::post('cancel/{encounter}', 'EncounterCancellationController@store')->name('encounters.cancel.store');
+Route::post('depart/{encounter}', 'EncounterDepartureController@store')->name('encounters.depart.store');
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
 

@@ -29,6 +29,7 @@ class Encounter extends Model
         'arrived_at',
         'cancelled_at',
         'cancellation_reason',
+        'departed_at'
     ];
 
     public static function schedule(Patient $patient, array $details)
@@ -52,6 +53,11 @@ class Encounter extends Model
             'cancelled_at' => Carbon::now(),
             'cancellation_reason' => $reason
         ]);
+    }
+
+    public function depart()
+    {
+        return tap($this)->update(['departed_at' => Carbon::now()]);
     }
 
     public function today()

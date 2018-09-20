@@ -19,7 +19,6 @@ class Encounter extends Model
         'rescheduled_at',
         'arrived_at',
         'departed_at',
-        'rescheduled_to',
     ];
 
     protected $fillable = [
@@ -29,7 +28,10 @@ class Encounter extends Model
         'arrived_at',
         'cancelled_at',
         'cancellation_reason',
-        'departed_at'
+        'departed_at',
+        'rescheduled_reason',
+        'rescheduled_from',
+        'rescheduled_to',
     ];
 
     public static function schedule(Patient $patient, array $details)
@@ -58,6 +60,25 @@ class Encounter extends Model
     public function depart()
     {
         return tap($this)->update(['departed_at' => Carbon::now()]);
+    }
+
+    public function reschedule($date, $time, $reason = null)
+    {
+        $newEncounter = tap($this->replicate(['scheduled_by']), function ($instance) use ($date, $time, $reason) {
+            $instance->save();
+            $instance->update([
+                'start_at'           => Carbon::fromScheduleRequest($date, $time),
+                'scheduled_at'       => Carbon::now(),
+                'rescheduled_reason' => $reason,
+                'rescheduled_from'   => $this->id,
+            ]);
+        });
+
+        $this->update([
+            'rescheduled_to' => $newEncounter->id,
+        ]);
+
+        return $newEncounter;
     }
 
     public function today()

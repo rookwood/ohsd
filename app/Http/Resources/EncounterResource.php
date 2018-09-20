@@ -21,7 +21,8 @@ class EncounterResource extends JsonResource
             'patient' => new PatientResource($this->patient),
             'notes' => $this->notes,
             'status' => EncounterStatus::guess($this->resource),
-            'rescheduled_from' => $this->rescheduled_from,
+            'rescheduled_from' => $this->rescheduledFromEncounter,
+            'rescheduled_to' => $this->rescheduledToEncounter
         ];
     }
 }

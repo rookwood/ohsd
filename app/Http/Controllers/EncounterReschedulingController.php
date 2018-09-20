@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Encounters\Encounter;
+use App\Http\Requests\EncounterReschedulingRequest;
 use App\Http\Resources\EncounterResource;
-use Illuminate\Http\Request;
 
 class EncounterReschedulingController extends Controller
 {
-    public function store(Request $request, Encounter $encounter)
+    public function store(EncounterReschedulingRequest $request, Encounter $encounter)
     {
         $newEncounter = $encounter->reschedule(
             ...array_values($request->only('date', 'time', 'reason'))

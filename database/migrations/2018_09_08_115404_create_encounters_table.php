@@ -19,6 +19,7 @@ class CreateEncountersTable extends Migration
             $table->unsignedInteger('patient_id');
             $table->text('notes')->nullable();
             $table->dateTime('scheduled_at')->default('');
+            $table->unsignedInteger('scheduled_by');
             $table->dateTime('arrived_at')->nullable();
             $table->dateTime('departed_at')->nullable();
             $table->dateTime('cancelled_at')->nullable();
@@ -27,7 +28,7 @@ class CreateEncountersTable extends Migration
             $table->unsignedInteger('rescheduled_from')->nullable();
             $table->unsignedInteger('rescheduled_to')->nullable();
             $table->string('rescheduled_reason')->nullable();
-            $table->unsignedInteger('scheduled_by');
+            $table->unsignedInteger('rescheduled_by')->nullable();
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Encounters;
 use App\Patient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Makeable\EloquentStatus\HasStatus;
 
 class Encounter extends Model
@@ -32,6 +33,8 @@ class Encounter extends Model
         'rescheduled_reason',
         'rescheduled_from',
         'rescheduled_to',
+        'rescheduled_at',
+        'rescheduled_by',
     ];
 
     public static function schedule(Patient $patient, array $details)
@@ -76,6 +79,8 @@ class Encounter extends Model
 
         $this->update([
             'rescheduled_to' => $newEncounter->id,
+            'rescheduled_by' => Auth::user()->id,
+            'rescheduled_at' => Carbon::now()
         ]);
 
         return $newEncounter;

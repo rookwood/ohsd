@@ -33,6 +33,7 @@ class RescheduleEncounterTest extends TestCase
             'rescheduled_from' => 1
         ]);
 
+        $this->fail('Need to deal with rescheduling relations for previous / next appts and all of the fallout from those changes in other tests');
         $responsae->assertStatus(201);
 
         $responsae->assertJsonStructure([

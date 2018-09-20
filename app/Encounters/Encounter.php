@@ -106,4 +106,14 @@ class Encounter extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    public function rescheduledFromEncounter()
+    {
+        return $this->hasOne(static::class, 'id', 'rescheduled_from');
+    }
+
+    public function rescheduledToEncounter()
+    {
+        return $this->hasOne(static::class, 'id', 'rescheduled_to');
+    }
 }

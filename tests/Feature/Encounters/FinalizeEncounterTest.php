@@ -59,4 +59,19 @@ class FinalizeEncounterTest extends TestCase
 
         $response->assertValidationError('outcome');
     }
+
+    /** @test */
+    public function an_associated_audiogram_is_required_for_outcome_to_be_completed()
+    {
+        $this->withExceptionHandling();
+
+        $encounter = factory(Encounter::class)->state('departed')->create();
+
+        $response = $this->actingAs(factory(User::class)->state('audiologist')->create())->json('POST',
+                route('encounters.finalize.store', $encounter), [
+                    'outcome' => 'completed'
+                ]);
+
+        $response->assertValidationError('audiogram');
+    }
 }

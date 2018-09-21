@@ -2,6 +2,7 @@
 
 namespace App\Encounters;
 
+use App\Audiogram;
 use App\Patient;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -119,6 +120,11 @@ class Encounter extends Model
     public function forTimeSpan($start, $end)
     {
         return $this->whereBetween('start_at', [$start, $end])->get();
+    }
+
+    public function audiogram()
+    {
+        return $this->hasOne(Audiogram::class);
     }
 
     public function patient()

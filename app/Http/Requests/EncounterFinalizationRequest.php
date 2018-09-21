@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class EncounterFinalizationRequest extends FormRequest
 {
@@ -24,7 +25,16 @@ class EncounterFinalizationRequest extends FormRequest
     public function rules()
     {
         return [
-            'outcome' => ['required']
+            'outcome' => ['required'],
+            'audiogram' => Rule::requiredIf($this->outcome, 'completed')
         ];
+    }
+
+    public function validationData()
+    {
+        return array_merge($this->all(),
+        [
+            'audiogram' => $this->encounter->audiogram
+        ]);
     }
 }

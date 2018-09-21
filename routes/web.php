@@ -33,13 +33,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('encounters/upcoming/week', 'EncountersForUpcomingWeekController@index')->name('encounters.week.index');
     Route::post('encounters/new/{patient}', 'EncountersController@store')->name('encounters.store');
 
-    Route::post('depart/{encounter}', 'EncounterDepartureController@store')->name('encounters.depart.store');
     Route::post('arrive/{encounter}', 'EncounterArrivalController@store')->name('encounters.arrival.store');
+    Route::post('depart/{encounter}', 'EncounterDepartureController@store')->name('encounters.depart.store');
     Route::post('cancel/{encounter}', 'EncounterCancellationController@store')->name('encounters.cancel.store');
     Route::post('reschedule/{encounter}', 'EncounterReschedulingController@store')->name('encounters.reschedule.store');
+    Route::post('finalize/{encounter}', 'EncounterFinalizationController@store')->name('encounters.finalize.store');
 });
 
-Route::post('finalize/{encounter}', 'EncounterFinalizationController@store')->name('encounters.finalize.store');
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
 

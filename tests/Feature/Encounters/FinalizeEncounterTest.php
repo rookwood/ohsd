@@ -30,4 +30,20 @@ class FinalizeEncounterTest extends TestCase
         $this->assertNotNull($encounter->fresh()->finalized_at);
         $response->assertStatus(201);
     }
+
+    /** @test */
+    public function unauthenticated_user_cannot_finalize_encounters()
+    {
+        $this->withExceptionHandling();
+
+        $encounter = factory(Encounter::class)->state('departed')->create();
+
+        $response = $this->json('POST', route('encounters.finalize.store', $encounter), [
+            'outcome' => 'completed'
+        ]);
+
+        $response->assertStatus(401);
+
+        $this->assertTrue($encounter->fresh()->checkStatus('departed'));
+    }
 }

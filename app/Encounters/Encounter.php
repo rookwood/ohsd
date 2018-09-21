@@ -35,6 +35,10 @@ class Encounter extends Model
         'rescheduled_to',
         'rescheduled_at',
         'rescheduled_by',
+        'finalized_at',
+        'finalized_by',
+        'outcome',
+        'outcome_notes',
     ];
 
     public static function schedule(Patient $patient, array $details)
@@ -84,6 +88,16 @@ class Encounter extends Model
         ]);
 
         return $newEncounter;
+    }
+
+    public function finalize($outcome, $notes = null)
+    {
+        return tap($this)->update([
+            'finalized_at' => Carbon::now(),
+            'finalized_by' => Auth::user()->id,
+            'outcome' => $outcome,
+            'outcome_notes' => $notes
+        ]);
     }
 
     public function today()

@@ -46,4 +46,11 @@ class EncounterStatus extends Status
             ->whereNotNull('scheduled_at')
             ->whereNotNull('rescheduled_to');
     }
+
+    public function final($query)
+    {
+        return $query->whereNotNull('finalized_at')
+            ->whereNotNull('finalized_by')
+            ->whereNotNull('outcome');
+    }
 }

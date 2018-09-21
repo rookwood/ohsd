@@ -29,6 +29,10 @@ class CreateEncountersTable extends Migration
             $table->unsignedInteger('rescheduled_to')->nullable();
             $table->string('rescheduled_reason')->nullable();
             $table->unsignedInteger('rescheduled_by')->nullable();
+            $table->dateTime('finalized_at')->nullable();
+            $table->unsignedInteger('finalized_by')->nullable();
+            $table->string('outcome')->nullable();
+            $table->text('outcome_notes')->nullable();
             $table->timestamps();
         });
     }

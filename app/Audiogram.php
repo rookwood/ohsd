@@ -17,7 +17,8 @@ class Audiogram extends Model
         'hearing_protection',
         'comment',
         'date',
-        'baseline'
+        'baseline',
+        'encounter_id',
     ];
 
     protected $casts = [

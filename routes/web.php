@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('reschedule/{encounter}', 'EncounterReschedulingController@store')->name('encounters.reschedule.store');
 });
 
+Route::post('finalize/{encounter}', 'EncounterFinalizationController@store')->name('encounters.finalize.store');
 
 Route::get('users/register', 'UsersController@create')->name('users.create');
 

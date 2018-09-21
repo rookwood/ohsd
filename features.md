@@ -52,3 +52,8 @@
 - [ ] Results from STS
 - [ ] Recommendations
   - [ ] Letter to patient and employer
+
+#### Misc todos
+- [ ] Add all domain events
+- [ ] Add policies for all requests
+- [ ] Consider multi-tenancy

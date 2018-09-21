@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Encounters\Encounter;
-use Illuminate\Http\Request;
+use App\Http\Requests\EncounterFinalizationRequest;
 
 class EncounterFinalizationController extends Controller
 {
-    public function store(Request $request, Encounter $encounter)
+    public function store(EncounterFinalizationRequest $request, Encounter $encounter)
     {
         $encounter->finalize(...array_values($request->only('outcome', 'notes')));
 

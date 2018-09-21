@@ -46,4 +46,17 @@ class FinalizeEncounterTest extends TestCase
 
         $this->assertTrue($encounter->fresh()->checkStatus('departed'));
     }
+
+    /** @test */
+    public function outcome_is_required()
+    {
+        $this->withExceptionHandling();
+
+        $encounter = factory(Encounter::class)->state('departed')->create();
+
+        $response = $this->actingAs(factory(User::class)->state('audiologist')->create())
+            ->json('POST', route('encounters.finalize.store', $encounter), []);
+
+        $response->assertValidationError('outcome');
+    }
 }

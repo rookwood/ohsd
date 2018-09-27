@@ -24,7 +24,7 @@ class CreateEncounterTest extends TestCase
         $response = $this->actingAs($user)
             ->json('POST', route('encounters.store', $patient), [
                 'date' => '2018-09-09',
-                'time' => '10:00 am',
+                'time' => '10:00',
                 'notes' => 'Test encounter note',
             ]);
 
@@ -108,7 +108,7 @@ class CreateEncounterTest extends TestCase
     {
         return array_merge([
             'date'  => '2018-09-09',
-            'time'  => '10:15 am',
+            'time'  => '10:15',
             'notes' => 'Test encounter note',
         ], $overrides);
     }

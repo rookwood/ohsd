@@ -122,6 +122,15 @@ class Encounter extends Model
         return $this->whereBetween('start_at', [$start, $end])->get();
     }
 
+    public function associateAudiogramById($id)
+    {
+        $audiogram = Audiogram::findOrFail($id);
+
+        abort_unless($audiogram->patient_id == $this->patient_id, 422, 'Audiogram is for a different patient');
+
+        return $this->audiogram()->save($audiogram);
+    }
+
     public function audiogram()
     {
         return $this->hasOne(Audiogram::class);

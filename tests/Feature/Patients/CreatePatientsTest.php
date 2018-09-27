@@ -41,16 +41,18 @@ class CreatePatientsTest extends TestCase
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'firstname',
-            'lastname',
-            'gender',
-            'mrn',
-            'birthdate',
-            'employer',
-            'hire_date',
-            'title',
-            'employee_id',
-            'audiograms'
+            'data' => [
+                'firstname',
+                'lastname',
+                'gender',
+                'mrn',
+                'birthdate',
+                'employer',
+                'hire_date',
+                'title',
+                'employee_id',
+                'audiograms'
+            ],
         ]);
     }
 
@@ -86,16 +88,18 @@ class CreatePatientsTest extends TestCase
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'firstname',
-            'lastname',
-            'gender',
-            'mrn',
-            'birthdate',
-            'employer',
-            'hire_date',
-            'title',
-            'employee_id',
-            'audiograms'
+            'data' => [
+                'firstname',
+                'lastname',
+                'gender',
+                'mrn',
+                'birthdate',
+                'employer',
+                'hire_date',
+                'title',
+                'employee_id',
+                'audiograms'
+            ],
         ]);
 
         $this->assertCount(1, Employer::all());

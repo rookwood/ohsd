@@ -12,6 +12,7 @@
 #### Demographics
 - [x] Patient information
   - [x] Intake medical questionaire
+  TODO: Intake validation, resource
     - [x] On registration, use previous intake as baseline for changes
   - [x] Basic demographics
 

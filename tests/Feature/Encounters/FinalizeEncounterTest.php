@@ -32,6 +32,25 @@ class FinalizeEncounterTest extends TestCase
     }
 
     /** @test */
+    public function associate_audiogram_to_mark_encounter_as_completed()
+    {
+        $encounter = factory(Encounter::class)->state('departed')->create();
+        $audiogram = factory(Audiogram::class)->state('normal')->create([
+            'patient_id' => $encounter->patient->id
+        ]);
+
+        $response = $this->actingAs(factory(User::class)->state('audiologist')->create())
+            ->json('POST', route('encounters.finalize.store', $encounter), [
+                'outcome' => 'completed',
+                'audiogram_id' => $audiogram->id
+            ]);
+
+        $this->assertTrue($encounter->fresh()->checkStatus('final'));
+        $this->assertTrue($encounter->audiogram->is($audiogram));
+        $response->assertStatus(201);
+    }
+
+    /** @test */
     public function unauthenticated_user_cannot_finalize_encounters()
     {
         $this->withExceptionHandling();

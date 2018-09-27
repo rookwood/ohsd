@@ -7,7 +7,9 @@ use App\Encounters\Encounter;
 use App\Encounters\EncounterStatus;
 use App\Observers\AudiogramObserver;
 use App\Observers\EncounterObserver;
+use App\Observers\PatientObserver;
 use App\Observers\UserObserver;
+use App\Patient;
 use App\Users\User;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Audiogram::observe(AudiogramObserver::class);
         Encounter::observe(EncounterObserver::class);
+        Patient::observe(PatientObserver::class);
 
         StatusManager::bind(Encounter::class, EncounterStatus::class);
     }

@@ -34,7 +34,7 @@ class EncounterFinalizationRequest extends FormRequest
     {
         return array_merge($this->all(),
         [
-            'audiogram' => $this->encounter->audiogram
+            'audiogram' => $this->encounter->audiogram ?? $this->audiogram_id
         ]);
     }
 }

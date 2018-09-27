@@ -27,6 +27,6 @@ class PatientsController extends Controller
             $patient = Patient::createWithEmployer($request->all(), $request->get('employer'));
         }
 
-        return response()->json(new PatientResource($patient), 201);
+        return response()->json(['data' => new PatientResource($patient)], 201);
     }
 }

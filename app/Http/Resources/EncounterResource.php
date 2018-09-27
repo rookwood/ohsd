@@ -17,6 +17,7 @@ class EncounterResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'start_at' => $this->start_at->format('Y-m-d H:i:s'),
             'patient' => new PatientResource($this->patient),
             'notes' => $this->notes,

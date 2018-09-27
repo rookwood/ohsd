@@ -25,7 +25,7 @@ class CreateEncounterRequest extends FormRequest
     {
         return [
             'date' => ['required', 'date', 'date_format:Y-m-d'],
-            'time' => ['required', 'date_format:H:i a'],
+            'time' => ['required', 'date_format:H:i'],
             'string' => ['nullable', 'string']
         ];
     }

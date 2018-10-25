@@ -1,5 +1,6 @@
 <?php
 
+use App\Audiogram;
 use App\Patient;
 use App\Users\User;
 use Faker\Generator as Faker;
@@ -55,4 +56,19 @@ $factory->state(Encounter::class, 'departed', [
     'start_at' => Carbon::now()->subMinutes(20),
     'arrived_at' => Carbon::now()->subMinute(18),
     'departed_at' => Carbon::now()
+]);
+
+$factory->state(Encounter::class, 'finalized', [
+    'start_at'    => Carbon::now()->subYears(2),
+    'arrived_at'  => Carbon::now()->subYears(2),
+    'departed_at' => Carbon::now()->subYears(2),
+    'finalized_at' => Carbon::now()->subYears(2),
+    'finalized_by' => function() {
+        return factory(User::class)->create()->id;
+    },
+    'outcome' => 'complete',
+    'notes' => 'intake baseline',
+    'audiogram_id' => function() {
+        return factory(Audiogram::class)->state('normal')->create()->id;
+    }
 ]);
